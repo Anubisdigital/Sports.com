@@ -65,7 +65,6 @@
     .dropdown {
       position: relative;
       display: inline-block;
-      display: none; /* hidden until admin confirmed */
     }
     .dropdown-btn {
       background: transparent;
@@ -197,6 +196,13 @@
     .form-group textarea:focus {
       border-color: #ef1b2d;
     }
+    .form-group select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239a9a9a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 16px;
+    }
     /* Buttons */
     .btn {
       background: #ef1b2d;
@@ -309,6 +315,10 @@
       padding: 14px 6px;
       border-bottom: 1px solid #1b1b1b;
     }
+    .table td.actions {
+      display: flex;
+      gap: 8px;
+    }
     .card {
       background: #111111;
       padding: 20px;
@@ -363,7 +373,7 @@
       <img src="sports.png" alt="logo">
       <span class="nav-brand">Boujee</span>
     </div>
-    <div class="dropdown" id="adminDropdown">
+    <div class="dropdown" id="adminDropdown" style="display:none;">
       <button class="dropdown-btn" id="dropdownBtn">
         <i class="fa-solid fa-user-shield"></i> Admin <i class="fa-solid fa-chevron-down"></i>
       </button>
@@ -400,7 +410,7 @@
           <label>Password</label>
           <input type="password" id="loginPassword" required placeholder="Your password">
         </div>
-        <!-- NEW: Optional claim code field -->
+        <!-- Optional claim code field -->
         <div class="form-group">
           <label>Admin Claim Code (optional - only if first time)</label>
           <input type="text" id="loginClaimCode" placeholder="Enter claim code to become admin">
@@ -567,12 +577,13 @@
     const auth = getAuth(app);
 
     // DOM elements
-    const authCard = document.getElementById('authCard');
-    const claimSection = document.getElementById('claimSection');
-    const adminDashboard = document.getElementById('adminDashboard');
+    const adminDropdown = document.getElementById('adminDropdown');
     const dropdownBtn = document.getElementById('dropdownBtn');
     const dropdownContent = document.getElementById('dropdownContent');
     const logoutBtn = document.getElementById('logoutBtn');
+    const authCard = document.getElementById('authCard');
+    const claimSection = document.getElementById('claimSection');
+    const adminDashboard = document.getElementById('adminDashboard');
     const authAlert = document.getElementById('authAlert');
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
@@ -582,8 +593,7 @@
 
     // Global state
     let currentUser = null;
-    let isAdmin = false;
-    let pendingClaimCode = null; // to store code from login form
+    let pendingClaimCode = null;
 
     // Tab switching
     const tabs = document.querySelectorAll('.auth-tab');
@@ -612,11 +622,9 @@
           const claimResult = await attemptClaim(pendingClaimCode);
           pendingClaimCode = null;
           if (claimResult.success) {
-            // Reload to ensure all sections show
             location.reload();
             return;
           } else {
-            // Claim failed, show alert and fall through to checkAdminStatus
             showAuthAlert(claimResult.message || 'Claim failed. You can try again below.', 'error');
           }
         }
@@ -626,11 +634,11 @@
         authCard.classList.remove('hidden');
         claimSection.classList.add('hidden');
         adminDashboard.classList.add('hidden');
-        dropdownBtn.style.display = 'none';
+        adminDropdown.style.display = 'none';
       }
     });
 
-    // Check admin status by calling protected endpoint
+    // Check admin status
     async function checkAdminStatus() {
       try {
         const idToken = await currentUser.getIdToken();
@@ -638,20 +646,16 @@
           headers: { 'Authorization': `Bearer ${idToken}` }
         });
         if (res.ok) {
-          isAdmin = true;
           adminDashboard.classList.remove('hidden');
           claimSection.classList.add('hidden');
-          dropdownBtn.style.display = 'flex';
+          adminDropdown.style.display = 'inline-block';
           loadPayments();
           loadTestimonies();
         } else if (res.status === 403) {
-          // Not admin, show claim form
-          isAdmin = false;
           adminDashboard.classList.add('hidden');
           claimSection.classList.remove('hidden');
-          dropdownBtn.style.display = 'none';
+          adminDropdown.style.display = 'none';
         } else {
-          // Other errors (e.g., 401) - sign out?
           await signOut(auth);
         }
       } catch (error) {
@@ -665,18 +669,13 @@
       const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPassword').value;
       const claimCodeInput = document.getElementById('loginClaimCode').value.trim();
-      
       if (!email || !password) {
         showAuthAlert('Please enter email and password.', 'error');
         return;
       }
-      
-      // Store claim code if provided
       pendingClaimCode = claimCodeInput || null;
-      
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        // onAuthStateChanged will handle the rest
       } catch (error) {
         showAuthAlert(parseAuthError(error), 'error');
       }
@@ -702,13 +701,12 @@
       }
       try {
         await createUserWithEmailAndPassword(auth, email, password);
-        // After registration, they'll be logged in; we don't auto-claim unless they provide code in register form (not implemented)
       } catch (error) {
         showAuthAlert(parseAuthError(error), 'error');
       }
     });
 
-    // Function to attempt claim
+    // Claim admin function
     async function attemptClaim(code) {
       try {
         const idToken = await currentUser.getIdToken();
@@ -721,17 +719,14 @@
           body: JSON.stringify({ code })
         });
         const data = await res.json();
-        if (res.ok) {
-          return { success: true };
-        } else {
-          return { success: false, message: data.error || 'Claim failed.' };
-        }
+        if (res.ok) return { success: true };
+        else return { success: false, message: data.error || 'Claim failed.' };
       } catch (error) {
         return { success: false, message: 'Network error.' };
       }
     }
 
-    // Parse Firebase auth errors
+    // Parse auth errors
     function parseAuthError(error) {
       switch (error.code) {
         case 'auth/email-already-in-use': return 'Email already registered.';
@@ -848,7 +843,6 @@
           </table>
         `;
         container.innerHTML = table;
-        // Attach events
         document.querySelectorAll('.approve-payment').forEach(btn => {
           btn.addEventListener('click', () => handlePaymentAction(btn.dataset.id, 'approve'));
         });
@@ -867,11 +861,8 @@
           method: 'POST',
           headers: { 'Authorization': `Bearer ${idToken}` }
         });
-        if (res.ok) {
-          loadPayments();
-        } else {
-          alert('Action failed.');
-        }
+        if (res.ok) loadPayments();
+        else alert('Action failed.');
       } catch (error) {
         console.error(error);
         alert('Network error.');
@@ -914,7 +905,6 @@
           </table>
         `;
         container.innerHTML = table;
-        // Attach events
         document.querySelectorAll('.approve-testimony').forEach(btn => {
           btn.addEventListener('click', () => handleTestimonyAction(btn.dataset.id, 'approve'));
         });
@@ -933,11 +923,8 @@
           method: 'POST',
           headers: { 'Authorization': `Bearer ${idToken}` }
         });
-        if (res.ok) {
-          loadTestimonies();
-        } else {
-          alert('Action failed.');
-        }
+        if (res.ok) loadTestimonies();
+        else alert('Action failed.');
       } catch (error) {
         console.error(error);
         alert('Network error.');
@@ -962,9 +949,8 @@
           method: 'POST',
           headers: { 'Authorization': `Bearer ${idToken}` }
         });
-        if (res.ok) {
-          showMembersAlert('Membership granted!', 'success');
-        } else {
+        if (res.ok) showMembersAlert('Membership granted!', 'success');
+        else {
           const data = await res.json();
           showMembersAlert(data.error || 'Grant failed.', 'error');
         }
@@ -985,9 +971,8 @@
           method: 'POST',
           headers: { 'Authorization': `Bearer ${idToken}` }
         });
-        if (res.ok) {
-          showMembersAlert('Membership revoked!', 'success');
-        } else {
+        if (res.ok) showMembersAlert('Membership revoked!', 'success');
+        else {
           const data = await res.json();
           showMembersAlert(data.error || 'Revoke failed.', 'error');
         }
@@ -1105,7 +1090,7 @@
     }
 
     // Initial state
-    dropdownBtn.style.display = 'none';
+    adminDropdown.style.display = 'none';
   </script>
 </body>
-  </html>
+</html>
