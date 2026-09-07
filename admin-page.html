@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Boujee Sports — Admin Dashboard</title>
+  <meta name="description" content="Admin dashboard for Boujee Sports">
+  <link rel="icon" href="sports.png">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      border-radius: 0 !important;
+    }
+    body {
+      background: #050505;
+      color: #f7f7f7;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.5;
+      padding-bottom: 95px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+    h1, h2, h3, .nav-brand, .section-header, .btn {
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.4px;
+    }
+    /* TOP BAR */
+    .topbar {
+      background: #111111;
+      border-bottom: 1px solid #242424;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 60;
+    }
+    .logo-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .topbar img {
+      height: 34px;
+      width: 34px;
+      object-fit: contain;
+    }
+    .nav-brand {
+      font-weight: 800;
+      font-size: 1.8rem;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    /* DROPDOWN */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-btn {
+      background: transparent;
+      border: 1px solid #ef1b2d;
+      color: #ef1b2d;
+      padding: 8px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 100%;
+      min-height: 40px;
+    }
+    .dropdown-btn:hover {
+      background: #ef1b2d;
+      color: white;
+    }
+    .dropdown-btn i {
+      font-size: 1.1rem;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background: #111111;
+      border: 1px solid #242424;
+      min-width: 220px;
+      z-index: 200;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    }
+    .dropdown-content.show {
+      display: block;
+    }
+    .dropdown-item {
+      color: #f7f7f7;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      font-size: 0.95rem;
+      border-bottom: 1px solid #1a1a1a;
+      cursor: pointer;
+    }
+    .dropdown-item:hover {
+      background: #1a1a1a;
+      color: #ef1b2d;
+    }
+    .dropdown-item i {
+      margin-right: 8px;
+    }
+    /* SECTIONS */
+    .section {
+      padding: 24px 0;
+      border-bottom: 1px solid #242424;
+    }
+    .section-header {
+      font-size: 2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: 0.6px;
+      color: #ef1b2d;
+    }
+    /* TABLES */
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .table th {
+      text-align: left;
+      color: #aaa;
+      border-bottom: 2px solid #242424;
+      padding: 12px 6px;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+    .table td {
+      padding: 14px 6px;
+      border-bottom: 1px solid #1b1b1b;
+    }
+    .table td.actions {
+      display: flex;
+      gap: 8px;
+    }
+    /* BUTTONS */
+    .btn {
+      background: #ef1b2d;
+      color: white;
+      font-weight: 800;
+      padding: 12px 20px;
+      text-decoration: none;
+      font-size: 1rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      border: 2px solid transparent;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn:hover {
+      background: #d01526;
+    }
+    .btn-green {
+      background: #2cd07e;
+      border-color: #2cd07e;
+    }
+    .btn-green:hover {
+      background: #24b06a;
+    }
+    .btn-red {
+      background: #ff4444;
+      border-color: #ff4444;
+    }
+    .btn-red:hover {
+      background: #e03333;
+    }
+    .btn-outline {
+      background: transparent;
+      border-color: #ef1b2d;
+      color: #ef1b2d;
+    }
+    .btn-outline:hover {
+      background: #ef1b2d;
+      color: white;
+    }
+    /* FORMS */
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #9a9a9a;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #ef1b2d;
+    }
+    .form-group select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239a9a9a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 16px;
+    }
+    /* CARDS */
+    .card {
+      background: #111111;
+      padding: 20px;
+      border-left: 4px solid #ef1b2d;
+      margin-bottom: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    /* ALERT */
+    .alert {
+      padding: 12px 16px;
+      margin: 16px 0;
+      font-size: 0.9rem;
+    }
+    .alert-error {
+      background: #2a0a0a;
+      border-left: 3px solid #ef1b2d;
+      color: #ff4444;
+    }
+    .alert-success {
+      background: #0a2a0a;
+      border-left: 3px solid #2cd07e;
+      color: #2cd07e;
+    }
+    /* Skeleton */
+    .skeleton {
+      background: #1e1e1e;
+      position: relative;
+      overflow: hidden;
+    }
+    .skeleton::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+      animation: shimmer 1.4s infinite;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    /* BOTTOM NAV (optional) */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #101010;
+      border-top: 1px solid #242424;
+      display: flex;
+      justify-content: space-around;
+      padding: 14px 8px;
+      z-index: 150;
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #8a8a8a;
+      font-size: 0.8rem;
+      text-decoration: none;
+      gap: 6px;
+    }
+    .nav-item i {
+      font-size: 1.5rem;
+    }
+    .nav-item:hover, .active {
+      color: #ef1b2d;
+    }
+    footer {
+      text-align: center;
+      padding: 30px 12px 120px;
+      color: #8a8a8a;
+      border-top: 1px solid #242424;
+      font-size: 0.9rem;
+    }
+    footer a {
+      color: #f7f7f7;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR with dropdown -->
+  <div class="topbar">
+    <div class="logo-wrapper">
+      <img src="sports.png" alt="logo">
+      <span class="nav-brand">Boujee</span>
+    </div>
+    <div class="dropdown" id="adminDropdown">
+      <button class="dropdown-btn" id="dropdownBtn">
+        <i class="fa-solid fa-user-shield"></i> Admin <i class="fa-solid fa-chevron-down"></i>
+      </button>
+      <div class="dropdown-content" id="dropdownContent">
+        <a class="dropdown-item" data-section="payments"><i class="fa-solid fa-credit-card"></i> Payments</a>
+        <a class="dropdown-item" data-section="members"><i class="fa-solid fa-users"></i> Members</a>
+        <a class="dropdown-item" data-section="testimonies"><i class="fa-solid fa-comment-dots"></i> Testimonies</a>
+        <a class="dropdown-item" data-section="posts"><i class="fa-solid fa-newspaper"></i> Posts</a>
+        <a class="dropdown-item" id="logoutBtn"><i class="fa-solid fa-sign-out-alt"></i> Log out</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- CLAIM FORM (shown if not admin) -->
+    <div id="claimSection" class="section hidden">
+      <div class="section-header"><i class="fa-solid fa-key"></i> Admin Claim</div>
+      <div class="card">
+        <p style="color:#9a9a9a;margin-bottom:16px;">Enter the one-time admin claim code to gain access.</p>
+        <div class="form-group">
+          <input type="text" id="claimCode" placeholder="Admin claim code">
+        </div>
+        <button class="btn" id="claimBtn"><i class="fa-solid fa-unlock"></i> Claim Admin</button>
+        <div id="claimAlert" class="alert hidden"></div>
+      </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD (visible if admin) -->
+    <div id="adminDashboard" class="hidden">
+      <!-- PAYMENTS SECTION -->
+      <section id="paymentsSection" class="section">
+        <div class="section-header"><i class="fa-solid fa-credit-card"></i> Pending Payments</div>
+        <div id="paymentsTableContainer">
+          <div class="skeleton" style="height:100px;"></div>
+        </div>
+      </section>
+
+      <!-- MEMBERS SECTION -->
+      <section id="membersSection" class="section hidden">
+        <div class="section-header"><i class="fa-solid fa-users"></i> Member Management</div>
+        <div class="card">
+          <h3 style="margin-bottom:12px;color:#ef1b2d;">Grant / Revoke Membership</h3>
+          <div class="form-group">
+            <label>User UID</label>
+            <input type="text" id="memberUid" placeholder="e.g. abc123...">
+          </div>
+          <div style="display:flex;gap:12px;">
+            <button class="btn btn-green" id="grantBtn"><i class="fa-solid fa-check"></i> Grant 30 days</button>
+            <button class="btn btn-red" id="revokeBtn"><i class="fa-solid fa-ban"></i> Revoke</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:12px;color:#ef1b2d;">Delete User</h3>
+          <div class="form-group">
+            <label>User UID</label>
+            <input type="text" id="deleteUid" placeholder="e.g. abc123...">
+          </div>
+          <button class="btn btn-red" id="deleteUserBtn"><i class="fa-solid fa-trash"></i> Delete Account</button>
+        </div>
+        <div id="membersAlert" class="alert hidden"></div>
+      </section>
+
+      <!-- TESTIMONIES SECTION -->
+      <section id="testimoniesSection" class="section hidden">
+        <div class="section-header"><i class="fa-solid fa-comment-dots"></i> Pending Testimonies</div>
+        <div id="testimoniesTableContainer">
+          <div class="skeleton" style="height:100px;"></div>
+        </div>
+      </section>
+
+      <!-- POSTS SECTION -->
+      <section id="postsSection" class="section hidden">
+        <div class="section-header"><i class="fa-solid fa-newspaper"></i> Manage Posts</div>
+        <!-- Create Post Form -->
+        <div class="card">
+          <h3 style="margin-bottom:16px;color:#ef1b2d;">Create New Post</h3>
+          <form id="createPostForm">
+            <div class="form-group">
+              <label>Post Type</label>
+              <select id="postType">
+                <option value="pick">Pick</option>
+                <option value="table">Table</option>
+                <option value="update">Update</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Tier</label>
+              <select id="postTier">
+                <option value="free">Free</option>
+                <option value="paid">Paid</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Body (Text or JSON for table)</label>
+              <textarea id="postBody" rows="4" placeholder="Post content..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Media URL (optional)</label>
+              <input type="url" id="postMediaUrl" placeholder="https://...">
+            </div>
+            <!-- Only for type=pick -->
+            <div id="pickFields" class="hidden">
+              <div class="form-group">
+                <label>Odds</label>
+                <input type="number" id="postOdds" step="0.01" placeholder="e.g. 1.85">
+              </div>
+              <div class="form-group">
+                <label>Stake (percentage)</label>
+                <input type="number" id="postStake" step="0.01" placeholder="e.g. 3.33">
+              </div>
+            </div>
+            <button type="submit" class="btn"><i class="fa-solid fa-plus"></i> Create Post</button>
+          </form>
+        </div>
+        <div id="postsAlert" class="alert hidden"></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV (optional) -->
+  <nav class="bottom-nav">
+    <a href="/" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="/#channel" class="nav-item"><i class="fa-solid fa-tower-broadcast"></i><span>Channel</span></a>
+    <a href="/#pick" class="nav-item"><i class="fa-solid fa-bullseye"></i><span>Tracker</span></a>
+    <a href="#" class="nav-item active"><i class="fa-solid fa-user-shield"></i><span>Admin</span></a>
+  </nav>
+
+  <footer>
+    <p><a href="/terms-policy.html">Terms &amp; Policy</a> · <a href="mailto:support@boujeesports.com">support@boujeesports.com</a></p>
+    <p style="margin:12px 0;">© 2026 Boujee Sports. All rights reserved.</p>
+  </footer>
+
+  <!-- FIREBASE MODULES -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js';
+    import { 
+      getAuth, 
+      onAuthStateChanged, 
+      signOut 
+    } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDtzlIfae9EjRZyaZZfndKTBFMuM8AJJcw",
+      authDomain: "boujee-sports.firebaseapp.com",
+      projectId: "boujee-sports",
+      storageBucket: "boujee-sports.firebasestorage.app",
+      messagingSenderId: "346736321644",
+      appId: "1:346736321644:web:342d0bb713657bb2886449"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // DOM elements
+    const dropdownBtn = document.getElementById('dropdownBtn');
+    const dropdownContent = document.getElementById('dropdownContent');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const claimSection = document.getElementById('claimSection');
+    const adminDashboard = document.getElementById('adminDashboard');
+    const claimBtn = document.getElementById('claimBtn');
+    const claimCode = document.getElementById('claimCode');
+    const claimAlert = document.getElementById('claimAlert');
+
+    // Global state
+    let currentUser = null;
+    let isAdmin = false;
+
+    // Check auth
+    onAuthStateChanged(auth, async user => {
+      if (!user) {
+        window.location.href = '/signin.html';
+        return;
+      }
+      currentUser = user;
+      checkAdminStatus();
+    });
+
+    // Check if user is admin by calling a protected endpoint
+    async function checkAdminStatus() {
+      try {
+        const idToken = await currentUser.getIdToken();
+        // Try to fetch pending payments (only admin can access)
+        const res = await fetch('/api/admin/payments', {
+          headers: { 'Authorization': `Bearer ${idToken}` }
+        });
+        if (res.ok) {
+          isAdmin = true;
+          adminDashboard.classList.remove('hidden');
+          claimSection.classList.add('hidden');
+          // Load initial data
+          loadPayments();
+          loadTestimonies();
+          // Show dropdown
+          dropdownBtn.style.display = 'flex';
+        } else if (res.status === 403) {
+          // Not admin, show claim form
+          isAdmin = false;
+          adminDashboard.classList.add('hidden');
+          claimSection.classList.remove('hidden');
+          dropdownBtn.style.display = 'none';
+        } else {
+          // Other error (maybe 401), redirect
+          window.location.href = '/signin.html';
+        }
+      } catch (error) {
+        console.error('Error checking admin:', error);
+        showAlert(claimAlert, 'Error checking admin status. Please refresh.', 'error');
+      }
+    }
+
+    // Dropdown toggle
+    dropdownBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdownContent.classList.toggle('show');
+    });
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.dropdown')) {
+        dropdownContent.classList.remove('show');
+      }
+    });
+
+    // Logout
+    logoutBtn.addEventListener('click', async () => {
+      await signOut(auth);
+      window.location.href = '/';
+    });
+
+    // Claim admin
+    claimBtn.addEventListener('click', async () => {
+      const code = claimCode.value.trim();
+      if (!code) {
+        showAlert(claimAlert, 'Please enter the claim code.', 'error');
+        return;
+      }
+      claimBtn.disabled = true;
+      try {
+        const idToken = await currentUser.getIdToken();
+        const res = await fetch('/api/admin/claim', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${idToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ code })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showAlert(claimAlert, 'Admin access granted! Refreshing...', 'success');
+          setTimeout(() => location.reload(), 1500);
+        } else {
+          showAlert(claimAlert, data.error || 'Claim failed.', 'error');
+        }
+      } catch (error) {
+        showAlert(claimAlert, 'Network error.', 'error');
+      } finally {
+        claimBtn.disabled = false;
+      }
+    });
+
+    // Dropdown section navigation
+    document.querySelectorAll('.dropdown-item[data-section]').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const section = item.dataset.section;
+        showSection(section);
+        dropdownContent.classList.remove('show');
+      });
+    });
+
+    function showSection(section) {
+      // Hide all sections
+      ['payments', 'members', 'testimonies', 'posts'].forEach(s => {
+        document.getElementById(s + 'Section').classList.add('hidden');
+      });
+      // Show selected
+      document.getElementById(section + 'Section').classList.remove('hidden');
+      // Load data if needed
+      if (section === 'payments') loadPayments();
+      if (section === 'testimonies') loadTestimonies();
+    }
+
+    // Load payments
+    async function loadPayments() {
+      const container = document.getElementById('paymentsTableContainer');
+      container.innerHTML = '<div class="skeleton" style="height:100px;"></div>';
+      try {
+        const idToken = await currentUser.getIdToken();
+        const res = await fetch('/api/admin/payments', {
+          headers: { 'Authorization': `Bearer ${idToken}` }
+        });
+        if (!res.ok) throw new Error('Failed to load payments');
+        const data = await res.json();
+        const payments = data.payments || [];
+        if (payments.length === 0) {
+          container.innerHTML = '<p style="color:#9a9a9a;">No pending payments.</p>';
+          return;
+        }
+        const table = `
+          <table class="table">
+            <thead><tr><th>User</th><th>Network</th><th>Amount</th><th>Submitted</th><th>Actions</th></tr></thead>
+            <tbody>
+              ${payments.map(p => `
+                <tr>
+                  <td>${p.uid}</td>
+                  <td>${p.network}</td>
+                  <td>${p.claimedAmount}</td>
+                  <td>${new Date(p.createdAt).toLocaleDateString()}</td>
+                  <td class="actions">
+                    <button class="btn btn-green approve-payment" data-id="${p.id}">Approve</button>
+                    <button class="btn btn-red reject-payment" data-id="${p.id}">Reject</button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+        container.innerHTML = table;
+        // Attach events
+        document.querySelectorAll('.approve-payment').forEach(btn => {
+          btn.addEventListener('click', () => handlePaymentAction(btn.dataset.id, 'approve'));
+        });
+        document.querySelectorAll('.reject-payment').forEach(btn => {
+          btn.addEventListener('click', () => handlePaymentAction(btn.dataset.id, 'reject'));
+        });
+      } catch (error) {
+        container.innerHTML = '<p class="alert alert-error">Error loading payments.</p>';
+      }
+    }
+
+    async function handlePaymentAction(id, action) {
+      try {
+        const idToken = await currentUser.getIdToken();
+        const res = await fetch(`/api/admin/payments/${id}/${action}`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${idToken}` }
+        });
+        if (res.ok) {
+          loadPayments();
+        } else {
+          alert('Action failed.');
+        }
+      } catch (error) {
+        console.error(error);
+        alert('Network error.');
+      }
+    }
+
+    // Load testimonies
+    async function loadTestimonies() {
+      const container = document.getElementById('testimoniesTableContainer');
+      container.innerHTML = '<div class="skeleton" style="height:100px;"></div>';
+      try {
+        const idToken = await currentUser.getIdToken();
+        const res = await fetch('/api/admin/testimonies', {
+          headers: { 'Authorization': `Bearer ${idToken}` }
+        });
+        if (!res.ok) throw new Error('Failed to load testimonies');
+        const data = await res.json();
+        const testimonies = data.testimonies || [];
+        if (testimonies.length === 0) {
+          container.innerHTML = '<p style="color:#9a9a9a;">No pending testimonies.</p>';
+          return;
+        }
+        const table = `
+          <table class="table">
+            <thead><tr><th>User</th><th>Post</th><th>Text</th><th>Submitted</th><th>Actions</th></tr></thead>
+            <tbody>
+              ${testimonies.map(t => `
+                <tr>
+                  <td>${t.uid}</td>
+                  <td>${t.postId}</td>
+                  <td>${t.text.slice(0, 50)}...</td>
+                  <td>${new Date(t.createdAt).toLocaleDateString()}</td>
+                  <td class="actions">
+                    <button class="btn btn-green approve-testimony" data-id="${t.id}">Approve</button>
+                    <button class="btn btn-red reject-testimony" data-id="${t.id}">Reject</button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+        container.innerHTML = table;
+        // Attach events
+        document.querySelectorAll('.approve-testimony').forEach(btn => {
+          btn.addEventListener('click', () => handleTestimonyAction(btn.dataset.id, 'approve'));
+        });
+        document.querySelectorAll('.reject-testimony').forEach(btn => {
+          btn.addEventListener('click', () => handleTestimonyAction(btn.dataset.id, 'reject'));
+        });
+      } catch (error) {
+        container.innerHTML = '<p class="alert alert-error">Error loading testimonies.</p>';
+      }
+    }
+
+    async function handleTestimonyAction(id, action) {
+      try {
+        const idToken = await currentUser.getIdToken();
+        const res = await fetch(`/api/admin/testimonies/${id}/${action}`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${idToken}` }
+        });
+        if (res.ok) {
+          loadTestimonies();
+        } else {
+          alert('Action failed.');
+        }
+      } catch (error) {
+        console.error(error);
+        alert('Network error.');
+      }
+    }
+
+    // Member management
+    const grantBtn = document.getElementById('grantBtn');
+    const revokeBtn = document.getElementById('revokeBtn');
+    const deleteUserBtn = document.getElementById('deleteUserBtn');
+    const membersAlert = document.getElementById('membersAlert');
+
+    grantBtn.addEventListener('click', async () => {
+      const uid = document.getElementById('memberUid').value.trim();
+      if (!uid) {
+        showAlert(membersAlert, 'Please enter a UID.', 'error');
+        return;
+      }
+      try {
+        const idToken = await currentUser.getIdToken();
+        const res = await fetch(`/api/admin/members/${uid}/grant`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${idToken}` }
+        });
+        if (res.ok) {
+          showAlert(membersAlert, 'Membership granted!', 'success');
+        } else {
+          const data = await res.json();
+          showAlert(membersAlert, data.error || 'Grant failed.', 'error');
+        }
+      } catch (error) {
+        showAlert(membersAlert, 'Network error.', 'error');
+      }
+    });
+
+    revokeBtn.addEventListener('click', async () => {
+      const uid = document.getElementById('memberUid').value.trim();
+      if (!uid) {
+        showAlert(membersAlert, 'Please enter a UID.', 'error');
+        return;
+      }
+      try {
+        const idToken = await currentUser.getIdToken();
+        const res = await fetch(`/api/admin/members/${uid}/revoke`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${idToken}` }
+        });
+        if (res.ok) {
+          showAlert(membersAlert, 'Membership revoked!', 'success');
+        } else {
+          const data = await res.json();
+          showAlert(membersAlert, data.error || 'Revoke failed.', 'error');
+        }
+      } catch (error) {
+        showAlert(membersAlert, 'Network error.', 'error');
+      }
+    });
+
+    deleteUserBtn.addEventListener('click', async () => {
+      const uid = document.getElementById('deleteUid').value.trim();
+      if (!uid) {
+        showAlert(membersAlert, 'Please enter a UID.', 'error');
+        return;
+      }
+      if (!confirm('Are you sure you want to permanently delete this user?')) return;
+      try {
+        const idToken = await currentUser.getIdToken();
+        const res = await fetch(`/api/admin/users/${uid}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${idToken}` }
+        });
+        if (res.ok) {
+          showAlert(membersAlert, 'User deleted!', 'success');
+          document.getElementById('deleteUid').value = '';
+        } else {
+          const data = await res.json();
+          showAlert(membersAlert, data.error || 'Delete failed.', 'error');
+        }
+      } catch (error) {
+        showAlert(membersAlert, 'Network error.', 'error');
+      }
+    });
+
+    // Create post
+    const createPostForm = document.getElementById('createPostForm');
+    const postType = document.getElementById('postType');
+    const postTier = document.getElementById('postTier');
+    const postBody = document.getElementById('postBody');
+    const postMediaUrl = document.getElementById('postMediaUrl');
+    const postOdds = document.getElementById('postOdds');
+    const postStake = document.getElementById('postStake');
+    const postsAlert = document.getElementById('postsAlert');
+
+    // Show/hide pick fields based on type
+    postType.addEventListener('change', () => {
+      document.getElementById('pickFields').classList.toggle('hidden', postType.value !== 'pick');
+    });
+
+    createPostForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = postBody.value.trim();
+      if (!body) {
+        showAlert(postsAlert, 'Body is required.', 'error');
+        return;
+      }
+      const payload = {
+        type: postType.value,
+        tier: postTier.value,
+        body: body,
+        mediaUrl: postMediaUrl.value || null
+      };
+      if (postType.value === 'pick') {
+        payload.odds = parseFloat(postOdds.value) || null;
+        payload.stake = parseFloat(postStake.value) || null;
+      }
+      try {
+        const idToken = await currentUser.getIdToken();
+        const res = await fetch('/api/admin/posts', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${idToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          showAlert(postsAlert, 'Post created successfully!', 'success');
+          createPostForm.reset();
+          document.getElementById('pickFields').classList.add('hidden');
+        } else {
+          const data = await res.json();
+          showAlert(postsAlert, data.error || 'Failed to create post.', 'error');
+        }
+      } catch (error) {
+        showAlert(postsAlert, 'Network error.', 'error');
+      }
+    });
+
+    // Helper to show alert
+    function showAlert(element, message, type) {
+      if (!element) return;
+      element.textContent = message;
+      element.className = `alert alert-${type}`;
+      element.classList.remove('hidden');
+      setTimeout(() => element.classList.add('hidden'), 5000);
+    }
+
+    // Initial state: hide dropdown until admin confirmed
+    dropdownBtn.style.display = 'none';
+  </script>
+</body>
+</html>
