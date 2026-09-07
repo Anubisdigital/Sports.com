@@ -16,7 +16,6 @@
 
   <!-- Page Specific Style Overrides & Skeletons -->
   <style>
-    /* Reset & CSS Custom Properties setup for standalone compatibility */
     :root {
       --bg-color: #050505;
       --panel-bg: #111111;
@@ -28,7 +27,7 @@
 
     * {
       box-sizing: border-box;
-      border-radius: 0 !important; /* Strict border-radius rule */
+      border-radius: 0 !important;
     }
 
     body {
@@ -60,10 +59,9 @@
       margin: 0 auto;
       padding: 16px;
       flex: 1;
-      padding-bottom: 80px; /* Space for fixed bottom navigation */
+      padding-bottom: 80px;
     }
 
-    /* Header */
     header.profile-header {
       display: flex;
       justify-content: space-between;
@@ -110,7 +108,6 @@
       color: var(--accent-red);
     }
 
-    /* Panel Card Layouts */
     .panel {
       background: var(--panel-bg);
       border: 1px solid var(--hairline);
@@ -153,7 +150,6 @@
       color: #ffffff;
     }
 
-    /* Forms */
     .form-group {
       margin-bottom: 15px;
     }
@@ -224,7 +220,6 @@
       display: none;
     }
 
-    /* Confirmation Box */
     .pending-notice {
       border: 1px solid #332200;
       background: #1a1400;
@@ -235,7 +230,6 @@
       line-height: 1.4;
     }
 
-    /* WhatsApp Group Card */
     .whatsapp-box {
       display: flex;
       flex-direction: column;
@@ -252,7 +246,6 @@
       background: #20bd5a;
     }
 
-    /* Bottom Navigation Bar */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -284,7 +277,6 @@
       color: var(--accent-red);
     }
 
-    /* Skeleton Loading UI */
     .skeleton {
       background: linear-gradient(90deg, #111 25%, #1c1c1c 50%, #111 75%);
       background-size: 200% 100%;
@@ -313,7 +305,6 @@
       width: 100%;
     }
 
-    /* Utility Helpers */
     .hidden {
       display: none !important;
     }
@@ -335,7 +326,6 @@
 <body>
 
   <div class="container">
-    <!-- Section 1: Header -->
     <header class="profile-header">
       <div class="brand-logo-wrap">
         <img src="sports.png" alt="Boujee Sports Logo" />
@@ -346,7 +336,6 @@
       </button>
     </header>
 
-    <!-- Global Loading Skeleton Wrapper -->
     <div id="skeletonLoader">
       <div class="panel">
         <div class="skeleton skeleton-title"></div>
@@ -359,10 +348,8 @@
       </div>
     </div>
 
-    <!-- Main Dynamic Content (Hidden until auth & session resolves) -->
     <main id="profileContent" class="hidden">
       
-      <!-- Section 2: Membership Status Card -->
       <section class="panel">
         <div class="panel-header-flex">
           <div>
@@ -375,7 +362,6 @@
         <div id="renewalDetails" style="font-size: 0.9rem; color: var(--muted-grey); border-top: 1px solid var(--hairline); padding-top: 10px; margin-top: 10px;"></div>
       </section>
 
-      <!-- Section 3: Payment Verification Form -->
       <section id="paymentSection" class="panel hidden">
         <h2>Submit Payment Claim</h2>
         <p style="font-size: 0.85rem; color: var(--muted-grey); margin-bottom: 15px;">
@@ -414,7 +400,6 @@
         </div>
       </section>
 
-      <!-- Section 4: WhatsApp Group Section -->
       <section id="whatsappSection" class="panel hidden">
         <div class="panel-header-flex">
           <div>
@@ -436,7 +421,6 @@
         </div>
       </section>
 
-      <!-- Section 5: Notification Preferences -->
       <section class="panel">
         <div class="panel-header-flex" style="margin-bottom: 0;">
           <div>
@@ -452,7 +436,6 @@
     </main>
   </div>
 
-  <!-- Footer -->
   <footer>
     <p>&copy; 2026 Boujee Sports. All rights reserved.</p>
     <p><a href="terms-policy.html">Terms & Policy</a> | Support: <a href="mailto:support@boujeesports.com">support@boujeesports.com</a></p>
@@ -461,7 +444,6 @@
     </p>
   </footer>
 
-  <!-- Fixed Bottom Mobile Navigation Bar -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item">
       <i class="fa-solid fa-house"></i>
@@ -473,11 +455,14 @@
     </a>
   </nav>
 
-  <!-- External Configuration Module -->
+  <!-- Shared config.js (ES Module) -->
   <script type="module" src="config.js"></script>
 
-  <!-- Application Logic Module -->
+  <!-- Application Logic (ES Module - inline) -->
   <script type="module">
+    // Wait for config.js to load by importing from it
+    import { auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from './config.js';
+
     document.addEventListener("DOMContentLoaded", () => {
       const skeletonLoader = document.getElementById("skeletonLoader");
       const profileContent = document.getElementById("profileContent");
@@ -507,12 +492,7 @@
       /* -------------------------------------------------------------
          1. AUTHENTICATION GATING
          ------------------------------------------------------------- */
-      if (!window.auth || typeof window.auth.onAuthStateChanged !== "function") {
-        console.error("Firebase auth unavailable from config.js");
-        return;
-      }
-
-      window.auth.onAuthStateChanged(async (user) => {
+      onAuthStateChanged(auth, async (user) => {
         if (!user) {
           window.location.replace("/signin.html?redirect=/profile.html");
           return;
@@ -536,12 +516,17 @@
 
         let sessionData = null;
         try {
-          if (window.api && typeof window.api.session === "function") {
-            const rawResponse = await window.api.session();
-            sessionData = typeof rawResponse.json === "function" ? await rawResponse.json() : rawResponse;
-          }
+          // Use fetch directly to avoid relying on api object
+          const idToken = await user.getIdToken();
+          const response = await fetch('/api/auth/session', {
+            headers: {
+              'Authorization': `Bearer ${idToken}`
+            }
+          });
+          const data = await response.json();
+          sessionData = data;
         } catch (err) {
-          console.warn("api.session() call failed, falling back to default:", err);
+          console.warn("Session fetch failed, falling back to default:", err);
         }
 
         const membership = sessionData?.membership || { status: "free", renewsAt: null };
@@ -578,17 +563,25 @@
          ------------------------------------------------------------- */
       async function fetchWhatsAppLink() {
         try {
-          if (window.api && typeof window.api.whatsappLink === "function") {
-            const rawRes = await window.api.whatsappLink();
-            const res = typeof rawRes.json === "function" ? await rawRes.json() : rawRes;
-            
-            const link = res?.whatsappLink || res?.url;
-            if (link) {
-              whatsappBtn.href = link;
-              whatsappBtn.classList.remove("hidden");
-            } else {
-              whatsappError.classList.remove("hidden");
+          const idToken = await auth.currentUser.getIdToken();
+          const response = await fetch('/api/whatsapp-link', {
+            headers: {
+              'Authorization': `Bearer ${idToken}`
             }
+          });
+          
+          if (!response.ok) {
+            throw new Error('Failed to fetch WhatsApp link');
+          }
+          
+          const data = await response.json();
+          const link = data.whatsappLink || data.url;
+          
+          if (link) {
+            whatsappBtn.href = link;
+            whatsappBtn.classList.remove("hidden");
+          } else {
+            whatsappError.classList.remove("hidden");
           }
         } catch (err) {
           console.error("Failed to load WhatsApp link:", err);
@@ -626,20 +619,34 @@
         submitPaymentBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Submitting...`;
 
         try {
-          if (window.api && typeof window.api.submitPayment === "function") {
-            await window.api.submitPayment(
-              paymentNetwork.value,
-              smsValue,
-              amountValue
-            );
+          const idToken = await auth.currentUser.getIdToken();
+          const response = await fetch('/api/payments/submit', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${idToken}`
+            },
+            body: JSON.stringify({
+              network: paymentNetwork.value,
+              smsText: smsValue,
+              claimedAmount: amountValue
+            })
+          });
 
+          if (!response.ok) {
+            throw new Error('Payment submission failed');
+          }
+
+          const data = await response.json();
+          
+          if (data.success) {
             paymentNetwork.disabled = true;
             claimedAmount.disabled = true;
             smsText.disabled = true;
             submitPaymentBtn.classList.add("hidden");
             pendingStateNotice.classList.remove("hidden");
           } else {
-            throw new Error("api.submitPayment missing from config.js");
+            throw new Error(data.error || 'Submission failed');
           }
         } catch (err) {
           console.error("Payment submission failed:", err);
@@ -654,11 +661,7 @@
          ------------------------------------------------------------- */
       signOutBtn.addEventListener("click", async () => {
         try {
-          if (window.signOut && window.auth) {
-            await window.signOut(window.auth);
-          } else if (window.auth && typeof window.auth.signOut === "function") {
-            await window.auth.signOut();
-          }
+          await auth.signOut();
           window.location.replace("/signin.html");
         } catch (err) {
           console.error("Sign out error:", err);
