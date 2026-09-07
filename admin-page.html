@@ -400,6 +400,11 @@
           <label>Password</label>
           <input type="password" id="loginPassword" required placeholder="Your password">
         </div>
+        <!-- NEW: Optional claim code field -->
+        <div class="form-group">
+          <label>Admin Claim Code (optional - only if first time)</label>
+          <input type="text" id="loginClaimCode" placeholder="Enter claim code to become admin">
+        </div>
         <button type="submit" class="btn" style="width:100%;"><i class="fa-solid fa-sign-in-alt"></i> Sign In</button>
       </form>
 
@@ -421,7 +426,7 @@
       </form>
     </div>
 
-    <!-- CLAIM FORM (visible when logged in but not admin) -->
+    <!-- CLAIM FORM (visible when logged in but not admin, and no claim code was provided or failed) -->
     <div id="claimSection" class="section hidden">
       <div class="section-header"><i class="fa-solid fa-key"></i> Admin Claim</div>
       <div class="card">
@@ -578,6 +583,7 @@
     // Global state
     let currentUser = null;
     let isAdmin = false;
+    let pendingClaimCode = null; // to store code from login form
 
     // Tab switching
     const tabs = document.querySelectorAll('.auth-tab');
@@ -597,10 +603,23 @@
     });
 
     // Auth state listener
-    onAuthStateChanged(auth, user => {
+    onAuthStateChanged(auth, async user => {
       if (user) {
         currentUser = user;
         authCard.classList.add('hidden');
+        // If we have a pending claim code, try to claim now
+        if (pendingClaimCode) {
+          const claimResult = await attemptClaim(pendingClaimCode);
+          pendingClaimCode = null;
+          if (claimResult.success) {
+            // Reload to ensure all sections show
+            location.reload();
+            return;
+          } else {
+            // Claim failed, show alert and fall through to checkAdminStatus
+            showAuthAlert(claimResult.message || 'Claim failed. You can try again below.', 'error');
+          }
+        }
         checkAdminStatus();
       } else {
         currentUser = null;
@@ -645,10 +664,16 @@
       e.preventDefault();
       const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPassword').value;
+      const claimCodeInput = document.getElementById('loginClaimCode').value.trim();
+      
       if (!email || !password) {
         showAuthAlert('Please enter email and password.', 'error');
         return;
       }
+      
+      // Store claim code if provided
+      pendingClaimCode = claimCodeInput || null;
+      
       try {
         await signInWithEmailAndPassword(auth, email, password);
         // onAuthStateChanged will handle the rest
@@ -677,11 +702,34 @@
       }
       try {
         await createUserWithEmailAndPassword(auth, email, password);
-        // onAuthStateChanged will handle the rest
+        // After registration, they'll be logged in; we don't auto-claim unless they provide code in register form (not implemented)
       } catch (error) {
         showAuthAlert(parseAuthError(error), 'error');
       }
     });
+
+    // Function to attempt claim
+    async function attemptClaim(code) {
+      try {
+        const idToken = await currentUser.getIdToken();
+        const res = await fetch('/api/admin/claim', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${idToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ code })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          return { success: true };
+        } else {
+          return { success: false, message: data.error || 'Claim failed.' };
+        }
+      } catch (error) {
+        return { success: false, message: 'Network error.' };
+      }
+    }
 
     // Parse Firebase auth errors
     function parseAuthError(error) {
@@ -696,7 +744,7 @@
       }
     }
 
-    // Claim admin
+    // Claim admin (from separate claim form)
     claimBtn.addEventListener('click', async () => {
       const code = claimCode.value.trim();
       if (!code) {
