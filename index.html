@@ -3,29 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Boujee Sports — Premium picks & live tracker</title>
+
+  <!-- Primary Meta Tags -->
+  <title>Boujee Sports — Premium picks &amp; live tracker</title>
+  <meta name="title" content="Boujee Sports — Premium picks &amp; live tracker">
   <meta name="description" content="Boujee Sports: free picks, exclusive channel, transparent record, membership">
   <link rel="icon" href="sports.png">
-  <!-- Primary Meta Tags -->
-<title>Boujee Sports — Premium picks & live tracker</title>
-<meta name="title" content="Boujee Sports — Premium picks & live tracker">
-<meta name="description" content="Boujee Sports: free picks, exclusive channel, transparent record, membership">
 
-<!-- Open Graph / Facebook / WhatsApp -->
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://boujeesports.com/">
-<meta property="og:title" content="Boujee Sports">
-<meta property="og:description" content="Transparent record, sharp picks, free daily selection.">
-<meta property="og:image" content="https://boujeesports.com/open.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://boujeesports.com/">
+  <meta property="og:title" content="Boujee Sports">
+  <meta property="og:description" content="Transparent record, sharp picks, free daily selection.">
+  <meta property="og:image" content="https://boujeesports.com/open.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
 
-<!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:url" content="https://boujeesports.com/">
-<meta property="twitter:title" content="Boujee Sports">
-<meta property="twitter:description" content="Transparent record, sharp picks, free daily selection.">
-<meta property="twitter:image" content="https://boujeesports.com/open.jpg">
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://boujeesports.com/">
+  <meta property="twitter:title" content="Boujee Sports">
+  <meta property="twitter:description" content="Transparent record, sharp picks, free daily selection.">
+  <meta property="twitter:image" content="https://boujeesports.com/open.jpg">
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -567,9 +566,7 @@
         bottomAuth.href = '/signin.html';
         bottomAuth.innerHTML = '<i class="fa-solid fa-user"></i><span>Account</span>';
       }
-      // Re-run once we know the real auth state, so /api/posts gets the
-      // login token when there is one (needed to unlock paid content for
-      // a signed-in paid member instead of always showing it as locked).
+
       loadData();
     });
 
@@ -585,8 +582,7 @@
     window.api = {
       async fetchPosts() {
         const headers = {};
-        // FIX: attach the Firebase ID token when signed in, so the backend
-        // can tell if this visitor is a paid member and unlock their content.
+
         if (auth.currentUser) {
           headers.Authorization = `Bearer ${await auth.currentUser.getIdToken()}`;
         }
@@ -618,8 +614,7 @@
         if (freePick) {
           const resultCls = freePick.result?.outcome === 'won' ? 'badge-won' : freePick.result?.outcome === 'lost' ? 'badge-lost' : 'badge-pending';
           pickBox.classList.remove('hidden');
-          // FIX: no fabricated fallback odds - show "—" like the results
-          // table already correctly does when there's genuinely no value.
+
           pickBox.innerHTML = `<div class="pick-card">
             <div class="pick-body">${window.utils.escapeHtml(freePick.body)}</div>
             <div class="pick-meta">
@@ -665,9 +660,7 @@
         if (!nonPick.length) chan.innerHTML = '<p>No channel posts yet.</p>';
         else chan.innerHTML = nonPick.map(p => {
           let body = window.utils.escapeHtml(typeof p.body === 'string' ? p.body : '');
-          // FIX: the API already returns table posts as a real object
-          // ({rows: [...]}), not a JSON string - JSON.parse-ing an object
-          // fails silently, which was leaving table posts blank.
+
           if (p.type === 'table' && p.body && typeof p.body === 'object' && Array.isArray(p.body.rows)) {
             body = `<table class="table"><tbody>${p.body.rows.map(r=>`<tr>${r.map(c=>`<td>${window.utils.escapeHtml(String(c))}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
           }
