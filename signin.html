@@ -1,672 +1,568 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Account Profile | Boujee Sports</title>
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="sports.png" />
-
-  <!-- External Stylesheet (Shared) -->
-  <link rel="stylesheet" href="styles.css" />
-
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-  <!-- Page Specific Style Overrides & Skeletons -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Boujee Sports — Sign In / Register</title>
+  <meta name="description" content="Boujee Sports: Premium picks & live tracker">
+  <link rel="icon" href="sports.png">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg-color: #050505;
-      --panel-bg: #111111;
-      --hairline: #242424;
-      --text-main: #f7f7f7;
-      --accent-red: #ef1b2d;
-      --muted-grey: #8a8a8a;
-    }
-
     * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
       border-radius: 0 !important;
     }
-
     body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
+      background: #050505;
+      color: #f7f7f7;
       font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
+      line-height: 1.5;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
-
-    h1, h2, h3, h4, h5, h6 {
-      font-family: 'Barlow Condensed', sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin: 0 0 10px 0;
-    }
-
-    a {
-      color: var(--text-main);
-      text-decoration: none;
-    }
-
     .container {
-      width: 100%;
-      max-width: 600px;
+      max-width: 480px;
       margin: 0 auto;
-      padding: 16px;
+      padding: 0 16px;
       flex: 1;
-      padding-bottom: 80px;
-    }
-
-    header.profile-header {
       display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    h1, h2, h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.4px;
+    }
+    /* Top Bar */
+    .topbar {
+      background: #111111;
+      border-bottom: 1px solid #242424;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      padding: 12px 0 20px 0;
-      border-bottom: 1px solid var(--hairline);
-      margin-bottom: 20px;
+      position: sticky;
+      top: 0;
+      z-index: 60;
     }
-
-    .brand-logo-wrap {
+    .logo-wrapper {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
     }
-
-    .brand-logo-wrap img {
-      width: 36px;
-      height: 36px;
+    .topbar img {
+      height: 34px;
+      width: 34px;
       object-fit: contain;
     }
-
-    .brand-logo-wrap h1 {
-      font-size: 1.5rem;
-      margin: 0;
-    }
-
-    .btn-signout {
-      background: transparent;
-      border: 1px solid var(--hairline);
-      color: var(--muted-grey);
-      padding: 8px 12px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-    }
-
-    .btn-signout:hover {
-      border-color: var(--accent-red);
-      color: var(--accent-red);
-    }
-
-    .panel {
-      background: var(--panel-bg);
-      border: 1px solid var(--hairline);
-      padding: 20px;
-      margin-bottom: 20px;
-      position: relative;
-    }
-
-    .panel-header-flex {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 15px;
-    }
-
-    .panel-illustration {
-      width: 56px;
-      height: 56px;
-      object-fit: contain;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 4px 8px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      font-size: 0.9rem;
-      letter-spacing: 0.5px;
+    .nav-brand {
+      font-weight: 800;
+      font-size: 1.8rem;
       text-transform: uppercase;
+      color: #fff;
     }
-
-    .badge-free {
-      background: #2a2a2a;
-      color: var(--muted-grey);
-      border: 1px solid var(--hairline);
+    /* Auth Card */
+    .auth-card {
+      background: #111111;
+      border: 1px solid #242424;
+      padding: 32px 24px;
+      margin: 20px 0;
     }
-
-    .badge-paid {
-      background: var(--accent-red);
-      color: #ffffff;
+    .auth-header {
+      text-align: center;
+      margin-bottom: 24px;
     }
-
+    .auth-header img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      margin-bottom: 12px;
+    }
+    .auth-header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    /* Tabs */
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 24px;
+      border-bottom: 2px solid #242424;
+    }
+    .auth-tab {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      font-weight: 700;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: #9a9a9a;
+      border: none;
+      background: transparent;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.5px;
+      transition: 0.2s;
+    }
+    .auth-tab.active {
+      color: #ef1b2d;
+      border-bottom: 2px solid #ef1b2d;
+    }
+    /* Forms */
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
-
     .form-group label {
       display: block;
-      font-size: 0.85rem;
-      color: var(--muted-grey);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      color: #9a9a9a;
+      font-size: 0.9rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-
-    .form-control {
+    .form-group input {
       width: 100%;
-      background: var(--bg-color);
-      border: 1px solid var(--hairline);
-      color: var(--text-main);
-      padding: 12px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.95rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .form-control:focus {
-      border-color: var(--text-main);
-    }
-
-    textarea.form-control {
-      min-height: 100px;
-      resize: vertical;
-    }
-
-    .btn-cta {
-      width: 100%;
-      background: var(--accent-red);
-      color: #ffffff;
-      border: none;
       padding: 14px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: background 0.2s;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: 0.2s;
     }
-
-    .btn-cta:hover:not(:disabled) {
-      background: #d01424;
+    .form-group input:focus {
+      border-color: #ef1b2d;
     }
-
-    .btn-cta:disabled {
-      background: #444444;
-      color: #888888;
-      cursor: not-allowed;
-    }
-
-    .error-text {
-      color: var(--accent-red);
-      font-size: 0.85rem;
-      margin-top: 5px;
+    /* Error / Success Messages */
+    .alert {
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
       display: none;
     }
-
-    .pending-notice {
-      border: 1px solid #332200;
-      background: #1a1400;
-      color: #ffcc00;
-      padding: 15px;
-      margin-top: 15px;
-      font-size: 0.9rem;
-      line-height: 1.4;
+    .alert-error {
+      background: #2a0a0a;
+      border-left: 3px solid #ef1b2d;
+      color: #ff4444;
     }
-
-    .whatsapp-box {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    .alert-success {
+      background: #0a2a0a;
+      border-left: 3px solid #2cd07e;
+      color: #2cd07e;
     }
-
-    .whatsapp-btn {
-      background: #25d366;
-      color: #000000;
-      font-weight: 700;
-    }
-
-    .whatsapp-btn:hover {
-      background: #20bd5a;
-    }
-
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background: var(--panel-bg);
-      border-top: 1px solid var(--hairline);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      z-index: 100;
-    }
-
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 0.75rem;
-      color: var(--muted-grey);
-      gap: 4px;
-    }
-
-    .nav-item i {
-      font-size: 1.2rem;
-    }
-
-    .nav-item.active {
-      color: var(--accent-red);
-    }
-
-    .skeleton {
-      background: linear-gradient(90deg, #111 25%, #1c1c1c 50%, #111 75%);
-      background-size: 200% 100%;
-      animation: loading 1.5s infinite;
-    }
-
-    @keyframes loading {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-
-    .skeleton-text {
-      height: 16px;
-      margin-bottom: 8px;
+    /* Buttons */
+    .btn {
       width: 100%;
+      background: #ef1b2d;
+      color: white;
+      font-weight: 800;
+      padding: 16px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      font-family: 'Barlow Condensed', sans-serif;
+      border: 2px solid transparent;
+      transition: 0.2s;
+      margin-top: 8px;
     }
-
-    .skeleton-title {
-      height: 24px;
-      margin-bottom: 12px;
-      width: 60%;
+    .btn:hover {
+      background: #d01526;
     }
-
-    .skeleton-btn {
-      height: 48px;
-      width: 100%;
+    .btn:disabled {
+      background: #444;
+      cursor: not-allowed;
     }
-
-    .hidden {
-      display: none !important;
-    }
-
-    footer {
-      border-top: 1px solid var(--hairline);
-      padding: 20px 16px 80px 16px;
+    /* Links */
+    .form-footer {
       text-align: center;
-      font-size: 0.8rem;
-      color: var(--muted-grey);
+      margin-top: 20px;
+      color: #9a9a9a;
+      font-size: 0.9rem;
     }
-
-    footer a {
-      color: var(--muted-grey);
+    .form-footer a {
+      color: #ef1b2d;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .form-footer a:hover {
       text-decoration: underline;
+    }
+    /* Back link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #9a9a9a;
+      text-decoration: none;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+    }
+    .back-link:hover {
+      color: #ef1b2d;
+    }
+    /* Loading Spinner */
+    .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #fff;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px 12px;
+      color: #8a8a8a;
+      border-top: 1px solid #242424;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <header class="profile-header">
-      <div class="brand-logo-wrap">
-        <img src="sports.png" alt="Boujee Sports Logo" />
-        <h1>Account</h1>
-      </div>
-      <button id="signOutBtn" class="btn-signout" aria-label="Sign Out">
-        <i class="fa-solid fa-right-from-bracket"></i> Sign Out
-      </button>
-    </header>
-
-    <div id="skeletonLoader">
-      <div class="panel">
-        <div class="skeleton skeleton-title"></div>
-        <div class="skeleton skeleton-text"></div>
-        <div class="skeleton skeleton-text" style="width: 40%;"></div>
-      </div>
-      <div class="panel">
-        <div class="skeleton skeleton-title" style="width: 50%;"></div>
-        <div class="skeleton skeleton-btn"></div>
-      </div>
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="logo-wrapper">
+      <img src="sports.png" alt="logo">
+      <span class="nav-brand">Boujee</span>
     </div>
+  </div>
 
-    <main id="profileContent" class="hidden">
-      
-      <section class="panel">
-        <div class="panel-header-flex">
-          <div>
-            <h2>Membership Status</h2>
-            <p id="userEmailText" style="color: var(--muted-grey); font-size: 0.85rem; margin-bottom: 8px;"></p>
-            <div id="statusBadgeContainer"></div>
-          </div>
-          <img src="payment.svg" alt="Payment Illustration" class="panel-illustration" />
+  <div class="container">
+    <a href="/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+
+    <div class="auth-card">
+      <div class="auth-header">
+        <img src="sports.png" alt="Boujee Sports">
+        <h1>Boujee Sports</h1>
+      </div>
+
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="register">Register</button>
+      </div>
+
+      <!-- Error/Success Messages -->
+      <div id="authAlert" class="alert"></div>
+
+      <!-- Sign In Form -->
+      <form id="loginForm" style="display: block;">
+        <div class="form-group">
+          <label for="loginEmail">Email Address</label>
+          <input type="email" id="loginEmail" required placeholder="you@example.com" autocomplete="email">
         </div>
-        <div id="renewalDetails" style="font-size: 0.9rem; color: var(--muted-grey); border-top: 1px solid var(--hairline); padding-top: 10px; margin-top: 10px;"></div>
-      </section>
-
-      <section id="paymentSection" class="panel hidden">
-        <h2>Submit Payment Claim</h2>
-        <p style="font-size: 0.85rem; color: var(--muted-grey); margin-bottom: 15px;">
-          Paste your mobile money transaction receipt below to request verification and activate your premium account.
-        </p>
-        
-        <form id="paymentForm" novalidate>
-          <div class="form-group">
-            <label for="paymentNetwork">Mobile Network</label>
-            <select id="paymentNetwork" class="form-control" required>
-              <option value="MTN Mobile Money">MTN Mobile Money</option>
-              <option value="Airtel Money">Airtel Money</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="claimedAmount">Amount Paid</label>
-            <input type="number" id="claimedAmount" class="form-control" placeholder="e.g. 50000" min="1" step="any" required />
-            <span id="amountError" class="error-text"><i class="fa-solid fa-circle-exclamation"></i> Please enter a valid amount.</span>
-          </div>
-
-          <div class="form-group">
-            <label for="smsText">SMS Confirmation Message</label>
-            <textarea id="smsText" class="form-control" placeholder="Paste full SMS message received from MTN/Airtel here..." required></textarea>
-            <span id="smsError" class="error-text"><i class="fa-solid fa-circle-exclamation"></i> SMS confirmation text is required.</span>
-          </div>
-
-          <button type="submit" id="submitPaymentBtn" class="btn-cta">
-            <i class="fa-solid fa-paper-plane"></i> Submit for review
-          </button>
-        </form>
-
-        <div id="pendingStateNotice" class="pending-notice hidden">
-          <strong><i class="fa-solid fa-clock"></i> Submitted - pending review</strong><br/>
-          An admin verifies your payment manually; premium features unlock immediately upon approval.
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" required placeholder="Your password" autocomplete="current-password" minlength="6">
         </div>
-      </section>
-
-      <section id="whatsappSection" class="panel hidden">
-        <div class="panel-header-flex">
-          <div>
-            <h2>VIP Community</h2>
-            <p style="font-size: 0.85rem; color: var(--muted-grey); margin-bottom: 0;">
-              Access exclusive daily tips, discussions, and updates directly in our private group.
-            </p>
-          </div>
-          <img src="Chat.svg" alt="Chat Illustration" class="panel-illustration" />
+        <button type="submit" class="btn" id="loginBtn">
+          <span class="btn-text">Sign In</span>
+          <span class="spinner"></span>
+        </button>
+        <div class="form-footer">
+          <a href="#" id="forgotLink">Forgot password?</a>
         </div>
-        
-        <div class="whatsapp-box" style="margin-top: 15px;">
-          <a id="whatsappBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-cta whatsapp-btn hidden">
-            <i class="fa-brands fa-whatsapp" style="font-size: 1.3rem;"></i> Join the group
-          </a>
-          <div id="whatsappError" style="font-size: 0.85rem; color: var(--accent-red);" class="hidden">
-            <i class="fa-solid fa-circle-exclamation"></i> Unable to retrieve WhatsApp access link. Please refresh or contact support.
-          </div>
-        </div>
-      </section>
+      </form>
 
-      <section class="panel">
-        <div class="panel-header-flex" style="margin-bottom: 0;">
-          <div>
-            <h2>Notification Settings</h2>
-            <p style="font-size: 0.85rem; color: var(--muted-grey); margin: 0;">
-              Push notification preferences are configured via device subscription settings.
-            </p>
-          </div>
-          <img src="notifications.svg" alt="Notifications Illustration" class="panel-illustration" />
+      <!-- Register Form -->
+      <form id="registerForm" style="display: none;">
+        <div class="form-group">
+          <label for="registerEmail">Email Address</label>
+          <input type="email" id="registerEmail" required placeholder="you@example.com" autocomplete="email">
         </div>
-      </section>
-
-    </main>
+        <div class="form-group">
+          <label for="registerPassword">Password</label>
+          <input type="password" id="registerPassword" required placeholder="Minimum 6 characters" autocomplete="new-password" minlength="6">
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" required placeholder="Re-enter password" autocomplete="new-password" minlength="6">
+        </div>
+        <button type="submit" class="btn" id="registerBtn">
+          <span class="btn-text">Create Account</span>
+          <span class="spinner"></span>
+        </button>
+      </form>
+    </div>
   </div>
 
   <footer>
-    <p>&copy; 2026 Boujee Sports. All rights reserved.</p>
-    <p><a href="terms-policy.html">Terms & Policy</a> | Support: <a href="mailto:support@boujeesports.com">support@boujeesports.com</a></p>
-    <p style="font-size: 0.75rem; margin-top: 8px; color: #555555;">
-      Illustrations by <a href="https://storyset.com" target="_blank" rel="noopener noreferrer" style="color: #555555;">Storyset</a>
-    </p>
+    <p style="margin-bottom: 10px;">© 2026 Boujee Sports. All rights reserved.</p>
+    <p><a href="/terms-policy.html" style="color:#8a8a8a;">Terms &amp; Policy</a> · <a href="mailto:support@boujeesports.com" style="color:#8a8a8a;">support@boujeesports.com</a></p>
   </footer>
 
-  <nav class="bottom-nav">
-    <a href="index.html" class="nav-item">
-      <i class="fa-solid fa-house"></i>
-      <span>Home</span>
-    </a>
-    <a href="profile.html" class="nav-item active">
-      <i class="fa-solid fa-user"></i>
-      <span>Account</span>
-    </a>
-  </nav>
-
-  <!-- Shared config.js (ES Module) -->
-  <script type="module" src="config.js"></script>
-
-  <!-- Application Logic (ES Module - inline) -->
+  <!-- FIREBASE MODULES -->
   <script type="module">
-    // Wait for config.js to load by importing from it
-    import { auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from './config.js';
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js';
+    import { 
+      getAuth, 
+      createUserWithEmailAndPassword, 
+      signInWithEmailAndPassword,
+      sendPasswordResetEmail,
+      onAuthStateChanged 
+    } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js';
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const skeletonLoader = document.getElementById("skeletonLoader");
-      const profileContent = document.getElementById("profileContent");
-      const signOutBtn = document.getElementById("signOutBtn");
+    const firebaseConfig = {
+      apiKey: "AIzaSyDtzlIfae9EjRZyaZZfndKTBFMuM8AJJcw",
+      authDomain: "boujee-sports.firebaseapp.com",
+      projectId: "boujee-sports",
+      storageBucket: "boujee-sports.firebasestorage.app",
+      messagingSenderId: "346736321644",
+      appId: "1:346736321644:web:342d0bb713657bb2886449"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-      // UI Elements - Status & Email
-      const userEmailText = document.getElementById("userEmailText");
-      const statusBadgeContainer = document.getElementById("statusBadgeContainer");
-      const renewalDetails = document.getElementById("renewalDetails");
+    // DOM Elements
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const loginBtn = document.getElementById('loginBtn');
+    const registerBtn = document.getElementById('registerBtn');
+    const authAlert = document.getElementById('authAlert');
+    const tabs = document.querySelectorAll('.auth-tab');
 
-      // UI Elements - Payment Form
-      const paymentSection = document.getElementById("paymentSection");
-      const paymentForm = document.getElementById("paymentForm");
-      const paymentNetwork = document.getElementById("paymentNetwork");
-      const claimedAmount = document.getElementById("claimedAmount");
-      const smsText = document.getElementById("smsText");
-      const submitPaymentBtn = document.getElementById("submitPaymentBtn");
-      const amountError = document.getElementById("amountError");
-      const smsError = document.getElementById("smsError");
-      const pendingStateNotice = document.getElementById("pendingStateNotice");
-
-      // UI Elements - WhatsApp
-      const whatsappSection = document.getElementById("whatsappSection");
-      const whatsappBtn = document.getElementById("whatsappBtn");
-      const whatsappError = document.getElementById("whatsappError");
-
-      /* -------------------------------------------------------------
-         1. AUTHENTICATION GATING
-         ------------------------------------------------------------- */
-      onAuthStateChanged(auth, async (user) => {
-        if (!user) {
-          window.location.replace("/signin.html?redirect=/profile.html");
-          return;
-        }
-
-        try {
-          await loadUserProfile(user);
-        } catch (error) {
-          console.error("Error loading user profile session:", error);
-        } finally {
-          skeletonLoader.classList.add("hidden");
-          profileContent.classList.remove("hidden");
-        }
-      });
-
-      /* -------------------------------------------------------------
-         2. PROFILE & SESSION DATA FETCHING
-         ------------------------------------------------------------- */
-      async function loadUserProfile(user) {
-        userEmailText.textContent = user.email || user.uid;
-
-        let sessionData = null;
-        try {
-          // Use fetch directly to avoid relying on api object
-          const idToken = await user.getIdToken();
-          const response = await fetch('/api/auth/session', {
-            headers: {
-              'Authorization': `Bearer ${idToken}`
-            }
-          });
-          const data = await response.json();
-          sessionData = data;
-        } catch (err) {
-          console.warn("Session fetch failed, falling back to default:", err);
-        }
-
-        const membership = sessionData?.membership || { status: "free", renewsAt: null };
-        const isPaid = membership.status === "paid";
-
-        if (isPaid) {
-          statusBadgeContainer.innerHTML = `<span class="badge badge-paid"><i class="fa-solid fa-crown"></i> Paid Membership</span>`;
-          if (membership.renewsAt) {
-            const dateStr = new Date(membership.renewsAt).toLocaleDateString(undefined, {
-              year: "numeric",
-              month: "short",
-              day: "numeric"
-            });
-            renewalDetails.innerHTML = `<i class="fa-solid fa-calendar-check"></i> Renews on: <strong>${dateStr}</strong>`;
-          } else {
-            renewalDetails.innerHTML = `<i class="fa-solid fa-check-circle"></i> Active Membership`;
-          }
-
-          paymentSection.classList.add("hidden");
-          whatsappSection.classList.remove("hidden");
-          await fetchWhatsAppLink();
-
-        } else {
-          statusBadgeContainer.innerHTML = `<span class="badge badge-free">Free Tier</span>`;
-          renewalDetails.innerHTML = `<i class="fa-solid fa-circle-info"></i> Upgrade to unlock VIP predictions and group access.`;
-
-          paymentSection.classList.remove("hidden");
-          whatsappSection.classList.add("hidden");
-        }
+    // Check if user is already logged in
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        // User is signed in, redirect to profile
+        window.location.href = '/profile.html';
       }
+    });
 
-      /* -------------------------------------------------------------
-         3. WHATSAPP LINK FETCH
-         ------------------------------------------------------------- */
-      async function fetchWhatsAppLink() {
-        try {
-          const idToken = await auth.currentUser.getIdToken();
-          const response = await fetch('/api/whatsapp-link', {
-            headers: {
-              'Authorization': `Bearer ${idToken}`
-            }
-          });
-          
-          if (!response.ok) {
-            throw new Error('Failed to fetch WhatsApp link');
-          }
-          
-          const data = await response.json();
-          const link = data.whatsappLink || data.url;
-          
-          if (link) {
-            whatsappBtn.href = link;
-            whatsappBtn.classList.remove("hidden");
-          } else {
-            whatsappError.classList.remove("hidden");
-          }
-        } catch (err) {
-          console.error("Failed to load WhatsApp link:", err);
-          whatsappError.classList.remove("hidden");
-        }
-      }
-
-      /* -------------------------------------------------------------
-         4. PAYMENT FORM HANDLING & VALIDATION
-         ------------------------------------------------------------- */
-      paymentForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
+    // Tab Switching
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
         
-        let isValid = true;
-        const amountValue = parseFloat(claimedAmount.value);
-        const smsValue = smsText.value.trim();
-
-        if (isNaN(amountValue) || amountValue <= 0) {
-          amountError.style.display = "block";
-          isValid = false;
+        if (tab.dataset.tab === 'login') {
+          loginForm.style.display = 'block';
+          registerForm.style.display = 'none';
         } else {
-          amountError.style.display = "none";
+          loginForm.style.display = 'none';
+          registerForm.style.display = 'block';
         }
+        
+        hideAlert();
+      });
+    });
 
-        if (!smsValue) {
-          smsError.style.display = "block";
-          isValid = false;
-        } else {
-          smsError.style.display = "none";
+    // Alert Helper
+    function showAlert(message, type = 'error') {
+      authAlert.className = `alert alert-${type}`;
+      authAlert.textContent = message;
+      authAlert.style.display = 'block';
+    }
+
+    function hideAlert() {
+      authAlert.style.display = 'none';
+    }
+
+    // Button Loading State
+    function setLoading(btn, isLoading) {
+      const text = btn.querySelector('.btn-text');
+      const spinner = btn.querySelector('.spinner');
+      if (isLoading) {
+        btn.disabled = true;
+        if (text) text.style.display = 'none';
+        if (spinner) spinner.style.display = 'block';
+      } else {
+        btn.disabled = false;
+        if (text) text.style.display = 'inline';
+        if (spinner) spinner.style.display = 'none';
+      }
+    }
+
+    // LOGIN HANDLER
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideAlert();
+      
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      
+      if (!email || !password) {
+        showAlert('Please enter both email and password.');
+        return;
+      }
+      
+      if (password.length < 6) {
+        showAlert('Password must be at least 6 characters.');
+        return;
+      }
+      
+      setLoading(loginBtn, true);
+      
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        
+        // Success - redirect to profile
+        showAlert('Login successful! Redirecting...', 'success');
+        
+        setTimeout(() => {
+          window.location.href = '/profile.html';
+        }, 1000);
+        
+      } catch (error) {
+        console.error('Login error:', error);
+        
+        switch (error.code) {
+          case 'auth/invalid-email':
+            showAlert('Invalid email address format.');
+            break;
+          case 'auth/user-disabled':
+            showAlert('This account has been disabled.');
+            break;
+          case 'auth/user-not-found':
+            showAlert('No account found with this email. Please register first.');
+            break;
+          case 'auth/wrong-password':
+            showAlert('Incorrect password. Please try again.');
+            break;
+          case 'auth/too-many-requests':
+            showAlert('Too many attempts. Please try again later.');
+            break;
+          case 'auth/network-request-failed':
+            showAlert('Network error. Please check your connection and try again.');
+            break;
+          default:
+            showAlert(error.message || 'Login failed. Please try again.');
         }
+      } finally {
+        setLoading(loginBtn, false);
+      }
+    });
 
-        if (!isValid) return;
-
-        submitPaymentBtn.disabled = true;
-        submitPaymentBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Submitting...`;
-
+    // REGISTER HANDLER
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideAlert();
+      
+      const email = document.getElementById('registerEmail').value.trim();
+      const password = document.getElementById('registerPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      // Validation
+      if (!email || !password || !confirmPassword) {
+        showAlert('Please fill in all fields.');
+        return;
+      }
+      
+      if (password.length < 6) {
+        showAlert('Password must be at least 6 characters.');
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        showAlert('Passwords do not match.');
+        return;
+      }
+      
+      // Email format validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showAlert('Please enter a valid email address.');
+        return;
+      }
+      
+      setLoading(registerBtn, true);
+      
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        
+        // Success - create user document in Firestore via API
         try {
-          const idToken = await auth.currentUser.getIdToken();
-          const response = await fetch('/api/payments/submit', {
+          // Get ID token for API authentication
+          const idToken = await user.getIdToken();
+          
+          // Create user in Firestore through the API Worker
+          const response = await fetch('/api/auth/session', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
               'Authorization': `Bearer ${idToken}`
-            },
-            body: JSON.stringify({
-              network: paymentNetwork.value,
-              smsText: smsValue,
-              claimedAmount: amountValue
-            })
+            }
           });
-
-          if (!response.ok) {
-            throw new Error('Payment submission failed');
-          }
-
-          const data = await response.json();
           
-          if (data.success) {
-            paymentNetwork.disabled = true;
-            claimedAmount.disabled = true;
-            smsText.disabled = true;
-            submitPaymentBtn.classList.add("hidden");
-            pendingStateNotice.classList.remove("hidden");
-          } else {
-            throw new Error(data.error || 'Submission failed');
+          if (!response.ok) {
+            console.warn('User created but session setup failed:', await response.text());
           }
-        } catch (err) {
-          console.error("Payment submission failed:", err);
-          alert("Submission failed. Please check your network connection and try again.");
-          submitPaymentBtn.disabled = false;
-          submitPaymentBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Submit for review`;
+        } catch (apiError) {
+          console.warn('API session creation failed:', apiError);
         }
-      });
+        
+        showAlert('Account created successfully! Redirecting...', 'success');
+        
+        setTimeout(() => {
+          window.location.href = '/profile.html';
+        }, 1500);
+        
+      } catch (error) {
+        console.error('Registration error:', error);
+        
+        switch (error.code) {
+          case 'auth/email-already-in-use':
+            showAlert('This email is already registered. Please sign in instead.');
+            // Switch to login tab
+            tabs[0].click();
+            break;
+          case 'auth/invalid-email':
+            showAlert('Invalid email address format.');
+            break;
+          case 'auth/weak-password':
+            showAlert('Password is too weak. Please use at least 6 characters.');
+            break;
+          case 'auth/operation-not-allowed':
+            showAlert('Email/Password authentication is not enabled. Please contact support.');
+            break;
+          case 'auth/network-request-failed':
+            showAlert('Network error. Please check your connection and try again.');
+            break;
+          default:
+            showAlert(error.message || 'Registration failed. Please try again.');
+        }
+      } finally {
+        setLoading(registerBtn, false);
+      }
+    });
 
-      /* -------------------------------------------------------------
-         5. SIGN OUT HANDLER
-         ------------------------------------------------------------- */
-      signOutBtn.addEventListener("click", async () => {
-        try {
-          await auth.signOut();
-          window.location.replace("/signin.html");
-        } catch (err) {
-          console.error("Sign out error:", err);
-        }
-      });
+    // FORGOT PASSWORD HANDLER
+    document.getElementById('forgotLink').addEventListener('click', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('loginEmail').value.trim();
+      
+      if (!email) {
+        showAlert('Please enter your email address first.');
+        return;
+      }
+      
+      hideAlert();
+      
+      try {
+        await sendPasswordResetEmail(auth, email);
+        showAlert('Password reset email sent! Check your inbox.', 'success');
+      } catch (error) {
+        console.error('Password reset error:', error);
+        showAlert(error.message || 'Could not send reset email. Please try again.');
+      }
     });
   </script>
 </body>
