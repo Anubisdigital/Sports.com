@@ -33,14 +33,16 @@
       font-family: 'Barlow Condensed', sans-serif;
       letter-spacing: 0.4px;
     }
-    /* TOP BAR */
+
+    /* TOP BAR - fixed height, full height dropdown */
     .topbar {
       background: #111111;
       border-bottom: 1px solid #242424;
-      padding: 12px 16px;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 0 16px;
       position: sticky;
       top: 0;
       z-index: 60;
@@ -49,6 +51,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      height: 100%;
     }
     .topbar img {
       height: 34px;
@@ -61,32 +64,36 @@
       text-transform: uppercase;
       color: #fff;
     }
-    /* DROPDOWN */
+
+    /* DROPDOWN - full height */
     .dropdown {
       position: relative;
-      display: inline-block;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      display: none; /* initially hidden, shown when admin */
     }
     .dropdown-btn {
       background: transparent;
-      border: 1px solid #ef1b2d;
+      border: none;
       color: #ef1b2d;
-      padding: 8px 16px;
+      padding: 0 20px;
       font-weight: 700;
       cursor: pointer;
       font-family: 'Inter', sans-serif;
-      font-size: 0.95rem;
+      font-size: 1rem;
+      height: 100%;
       display: flex;
       align-items: center;
       gap: 8px;
-      height: 100%;
-      min-height: 40px;
+      transition: background 0.2s;
     }
     .dropdown-btn:hover {
-      background: #ef1b2d;
-      color: white;
+      background: #1a1a1a;
+      color: #fff;
     }
     .dropdown-btn i {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
     }
     .dropdown-content {
       display: none;
@@ -95,7 +102,7 @@
       top: 100%;
       background: #111111;
       border: 1px solid #242424;
-      min-width: 220px;
+      min-width: 240px;
       z-index: 200;
       box-shadow: 0 8px 20px rgba(0,0,0,0.5);
     }
@@ -104,10 +111,10 @@
     }
     .dropdown-item {
       color: #f7f7f7;
-      padding: 12px 16px;
+      padding: 16px 20px;
       text-decoration: none;
       display: block;
-      font-size: 0.95rem;
+      font-size: 1rem;
       border-bottom: 1px solid #1a1a1a;
       cursor: pointer;
     }
@@ -118,6 +125,7 @@
     .dropdown-item i {
       margin-right: 8px;
     }
+
     /* AUTH CARD */
     .auth-card {
       background: #111111;
@@ -142,7 +150,6 @@
       text-transform: uppercase;
       color: #fff;
     }
-    /* Tabs */
     .auth-tabs {
       display: flex;
       margin-bottom: 24px;
@@ -203,6 +210,7 @@
       background-position: right 14px center;
       background-size: 16px;
     }
+
     /* Buttons */
     .btn {
       background: #ef1b2d;
@@ -223,20 +231,10 @@
     .btn:hover {
       background: #d01526;
     }
-    .btn-green {
-      background: #2cd07e;
-      border-color: #2cd07e;
-    }
-    .btn-green:hover {
-      background: #24b06a;
-    }
-    .btn-red {
-      background: #ff4444;
-      border-color: #ff4444;
-    }
-    .btn-red:hover {
-      background: #e03333;
-    }
+    .btn-green { background: #2cd07e; border-color: #2cd07e; }
+    .btn-green:hover { background: #24b06a; }
+    .btn-red { background: #ff4444; border-color: #ff4444; }
+    .btn-red:hover { background: #e03333; }
     .btn-outline {
       background: transparent;
       border-color: #ef1b2d;
@@ -246,26 +244,19 @@
       background: #ef1b2d;
       color: white;
     }
-    /* Alert */
+
+    /* Alerts */
     .alert {
       padding: 12px 16px;
       margin: 16px 0;
       font-size: 0.9rem;
     }
-    .alert-error {
-      background: #2a0a0a;
-      border-left: 3px solid #ef1b2d;
-      color: #ff4444;
-    }
-    .alert-success {
-      background: #0a2a0a;
-      border-left: 3px solid #2cd07e;
-      color: #2cd07e;
-    }
+    .alert-error { background: #2a0a0a; border-left: 3px solid #ef1b2d; color: #ff4444; }
+    .alert-success { background: #0a2a0a; border-left: 3px solid #2cd07e; color: #2cd07e; }
+
     /* Hidden */
-    .hidden {
-      display: none;
-    }
+    .hidden { display: none; }
+
     /* Skeleton */
     .skeleton {
       background: #1e1e1e;
@@ -283,6 +274,7 @@
       0% { transform: translateX(-100%); }
       100% { transform: translateX(100%); }
     }
+
     /* Sections */
     .section {
       padding: 24px 0;
@@ -315,16 +307,59 @@
       padding: 14px 6px;
       border-bottom: 1px solid #1b1b1b;
     }
-    .table td.actions {
-      display: flex;
-      gap: 8px;
-    }
     .card {
       background: #111111;
       padding: 20px;
       border-left: 4px solid #ef1b2d;
       margin-bottom: 20px;
     }
+
+    /* Table Builder */
+    .table-builder-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+    .table-builder-table td { padding: 8px; border: 1px solid #2a2a2a; }
+    .table-builder-table input { background: #1a1a1a; border: 1px solid #2a2a2a; color: #fff; padding: 8px; width: 100%; }
+    .table-builder-btn {
+      background: #1a1a1a;
+      border: 1px solid #ef1b2d;
+      color: #ef1b2d;
+      padding: 10px 16px;
+      margin-right: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-family: 'Barlow Condensed', sans-serif;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .table-builder-btn:hover { background: #ef1b2d; color: #fff; }
+
+    /* Image upload preview */
+    .image-upload-container {
+      margin-top: 12px;
+    }
+    .image-upload-btn {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      color: #fff;
+      padding: 10px 16px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .image-upload-btn:hover {
+      background: #2a2a2a;
+    }
+    .image-preview {
+      max-width: 100%;
+      height: auto;
+      margin-top: 12px;
+      display: none;
+    }
+
     /* Bottom nav */
     .bottom-nav {
       position: fixed;
@@ -514,14 +549,36 @@
                 <option value="paid">Paid</option>
               </select>
             </div>
-            <div class="form-group">
+
+            <!-- Textarea for non-table posts -->
+            <div class="form-group" id="bodyTextGroup">
               <label>Body (Text or JSON for table)</label>
               <textarea id="postBody" rows="4" placeholder="Post content..."></textarea>
             </div>
-            <div class="form-group">
-              <label>Media URL (optional)</label>
-              <input type="url" id="postMediaUrl" placeholder="https://...">
+
+            <!-- Table Builder (hidden until type=table) -->
+            <div id="tableBuilderContainer" class="hidden">
+              <div class="form-group">
+                <label>Table Content</label>
+                <div id="tableGrid"></div>
+                <div style="margin-top:12px;">
+                  <button type="button" id="addRowBtn" class="table-builder-btn"><i class="fa-solid fa-plus"></i> Add Row</button>
+                  <button type="button" id="addColumnBtn" class="table-builder-btn"><i class="fa-solid fa-plus"></i> Add Column</button>
+                </div>
+              </div>
             </div>
+
+            <!-- Cloudinary image upload -->
+            <div class="form-group">
+              <label>Image (optional)</label>
+              <div class="image-upload-container">
+                <button type="button" id="uploadImageBtn" class="image-upload-btn"><i class="fa-solid fa-upload"></i> Upload Image</button>
+                <input type="file" id="imageFileInput" accept="image/*" style="display:none;">
+                <img id="imagePreview" class="image-preview" alt="Preview">
+                <input type="hidden" id="postMediaUrl">
+              </div>
+            </div>
+
             <!-- Only for type=pick -->
             <div id="pickFields" class="hidden">
               <div class="form-group">
@@ -533,6 +590,7 @@
                 <input type="number" id="postStake" step="0.01" placeholder="e.g. 3.33">
               </div>
             </div>
+
             <button type="submit" class="btn"><i class="fa-solid fa-plus"></i> Create Post</button>
           </form>
         </div>
@@ -576,6 +634,10 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
+    // Cloudinary configuration (replace with your cloud name and preset)
+    const CLOUDINARY_CLOUD_NAME = 'your-cloud-name'; // e.g., 'boujee-sports'
+    const CLOUDINARY_UPLOAD_PRESET = 'boujee_sports'; // unsigned preset
+
     // DOM elements
     const adminDropdown = document.getElementById('adminDropdown');
     const dropdownBtn = document.getElementById('dropdownBtn');
@@ -590,6 +652,25 @@
     const claimBtn = document.getElementById('claimBtn');
     const claimCode = document.getElementById('claimCode');
     const claimAlert = document.getElementById('claimAlert');
+
+    // Post form elements
+    const createPostForm = document.getElementById('createPostForm');
+    const postType = document.getElementById('postType');
+    const postTier = document.getElementById('postTier');
+    const postBody = document.getElementById('postBody');
+    const postMediaUrl = document.getElementById('postMediaUrl');
+    const postOdds = document.getElementById('postOdds');
+    const postStake = document.getElementById('postStake');
+    const postsAlert = document.getElementById('postsAlert');
+    const bodyTextGroup = document.getElementById('bodyTextGroup');
+    const tableBuilderContainer = document.getElementById('tableBuilderContainer');
+    const pickFields = document.getElementById('pickFields');
+    const uploadImageBtn = document.getElementById('uploadImageBtn');
+    const imageFileInput = document.getElementById('imageFileInput');
+    const imagePreview = document.getElementById('imagePreview');
+
+    // Table Builder State (2x2 initial)
+    let tableData = [["", ""], ["", ""]];
 
     // Global state
     let currentUser = null;
@@ -648,7 +729,7 @@
         if (res.ok) {
           adminDashboard.classList.remove('hidden');
           claimSection.classList.add('hidden');
-          adminDropdown.style.display = 'inline-block';
+          adminDropdown.style.display = 'flex';
           loadPayments();
           loadTestimonies();
         } else if (res.status === 403) {
@@ -785,7 +866,6 @@
     // Logout
     logoutBtn.addEventListener('click', async () => {
       await signOut(auth);
-      // onAuthStateChanged will handle UI
     });
 
     // Section navigation
@@ -1006,37 +1086,112 @@
       }
     });
 
-    // Create post
-    const createPostForm = document.getElementById('createPostForm');
-    const postType = document.getElementById('postType');
-    const postTier = document.getElementById('postTier');
-    const postBody = document.getElementById('postBody');
-    const postMediaUrl = document.getElementById('postMediaUrl');
-    const postOdds = document.getElementById('postOdds');
-    const postStake = document.getElementById('postStake');
-    const postsAlert = document.getElementById('postsAlert');
-
+    // Post type change
     postType.addEventListener('change', () => {
-      document.getElementById('pickFields').classList.toggle('hidden', postType.value !== 'pick');
+      const type = postType.value;
+      // Show/hide body textarea and table builder
+      if (type === 'table') {
+        bodyTextGroup.classList.add('hidden');
+        tableBuilderContainer.classList.remove('hidden');
+        renderTable();
+      } else {
+        bodyTextGroup.classList.remove('hidden');
+        tableBuilderContainer.classList.add('hidden');
+      }
+      // Show/hide pick fields
+      pickFields.classList.toggle('hidden', type !== 'pick');
     });
 
+    // Table Builder functions
+    function renderTable() {
+      const container = document.getElementById('tableGrid');
+      let html = '<table class="table-builder-table">';
+      for (let r = 0; r < tableData.length; r++) {
+        html += '<tr>';
+        for (let c = 0; c < tableData[0].length; c++) {
+          html += `<td><input type="text" data-r="${r}" data-c="${c}" value="${tableData[r][c]}"></td>`;
+        }
+        html += '</tr>';
+      }
+      html += '</table>';
+      container.innerHTML = html;
+      container.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', (e) => {
+          const r = e.target.dataset.r;
+          const c = e.target.dataset.c;
+          tableData[r][c] = e.target.value;
+        });
+      });
+    }
+
+    document.getElementById('addRowBtn').addEventListener('click', () => {
+      tableData.push(new Array(tableData[0].length).fill(''));
+      renderTable();
+    });
+
+    document.getElementById('addColumnBtn').addEventListener('click', () => {
+      tableData.forEach(row => row.push(''));
+      renderTable();
+    });
+
+    // Image upload via Cloudinary
+    uploadImageBtn.addEventListener('click', () => {
+      imageFileInput.click();
+    });
+
+    imageFileInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      // Show preview
+      imagePreview.src = URL.createObjectURL(file);
+      imagePreview.style.display = 'block';
+
+      // Prepare form data
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+
+      // Upload to Cloudinary
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      if (data.secure_url) {
+        postMediaUrl.value = data.secure_url;
+      } else {
+        alert('Upload failed: ' + (data.error?.message || 'Unknown error'));
+      }
+    });
+
+    // Submit new post
     createPostForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const body = postBody.value.trim();
-      if (!body) {
-        showPostsAlert('Body is required.', 'error');
-        return;
+      const type = postType.value;
+      const tier = postTier.value;
+      let body = '';
+      if (type === 'table') {
+        body = { rows: tableData };
+      } else {
+        body = postBody.value.trim();
+        if (!body) {
+          showPostsAlert('Body is required.', 'error');
+          return;
+        }
       }
+
       const payload = {
-        type: postType.value,
-        tier: postTier.value,
+        type: type,
+        tier: tier,
         body: body,
         mediaUrl: postMediaUrl.value || null
       };
-      if (postType.value === 'pick') {
+      if (type === 'pick') {
         payload.odds = parseFloat(postOdds.value) || null;
         payload.stake = parseFloat(postStake.value) || null;
       }
+
       try {
         const idToken = await currentUser.getIdToken();
         const res = await fetch('/api/admin/posts', {
@@ -1050,6 +1205,11 @@
         if (res.ok) {
           showPostsAlert('Post created successfully!', 'success');
           createPostForm.reset();
+          // Reset table data to 2x2 empty
+          tableData = [["", ""], ["", ""]];
+          renderTable();
+          postMediaUrl.value = '';
+          imagePreview.style.display = 'none';
           document.getElementById('pickFields').classList.add('hidden');
         } else {
           const data = await res.json();
@@ -1091,6 +1251,7 @@
 
     // Initial state
     adminDropdown.style.display = 'none';
+    renderTable(); // initial render (hidden but ready)
   </script>
 </body>
-</html>
+  </html>
