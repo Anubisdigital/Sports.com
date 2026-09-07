@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Boujee Sports — My Account</title>
+  <meta name="description" content="Boujee Sports: Your account, membership, and preferences">
+  <link rel="icon" href="sports.png">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      border-radius: 0 !important;
+    }
+    body {
+      background: #050505;
+      color: #f7f7f7;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.5;
+      padding-bottom: 95px;
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+    h1, h2, h3, .nav-brand {
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.4px;
+    }
+    
+    /* TOP BAR */
+    .topbar {
+      background: #111111;
+      border-bottom: 1px solid #242424;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 60;
+    }
+    .logo-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .topbar img {
+      height: 34px;
+      width: 34px;
+      object-fit: contain;
+    }
+    .nav-brand {
+      font-weight: 800;
+      font-size: 1.8rem;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .logout-btn {
+      color: #ef1b2d;
+      font-weight: 700;
+      text-decoration: none;
+      background: transparent;
+      padding: 8px 14px;
+      border: 1px solid #ef1b2d;
+      transition: 0.2s;
+      font-size: 0.95rem;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
+    .logout-btn:hover {
+      background: #ef1b2d;
+      color: white;
+    }
+    
+    /* PROFILE HEADER */
+    .profile-header {
+      padding: 32px 0 24px;
+      border-bottom: 1px solid #242424;
+      text-align: center;
+    }
+    .avatar-circle {
+      width: 80px;
+      height: 80px;
+      background: #1a1a1a;
+      border: 3px solid #ef1b2d;
+      border-radius: 50% !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #ef1b2d;
+      text-transform: uppercase;
+    }
+    .profile-name {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .profile-email {
+      color: #9a9a9a;
+      font-size: 1rem;
+      margin-bottom: 16px;
+    }
+    
+    /* SECTIONS */
+    .section {
+      padding: 24px 0;
+      border-bottom: 1px solid #242424;
+    }
+    .section-header {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: 0.6px;
+    }
+    
+    /* MEMBERSHIP CARD */
+    .membership-card {
+      background: #111111;
+      border-left: 6px solid #ef1b2d;
+      padding: 24px;
+      text-align: center;
+    }
+    .membership-status {
+      font-size: 1.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .status-free { color: #f0b34c; }
+    .status-paid { color: #2cd07e; }
+    .membership-details {
+      color: #9a9a9a;
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+    .membership-cta {
+      display: inline-block;
+      background: #ef1b2d;
+      color: white;
+      font-weight: 800;
+      padding: 14px 28px;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.3px;
+      transition: 0.2s;
+      margin-top: 8px;
+    }
+    .membership-cta:hover {
+      background: #d01526;
+    }
+    
+    /* WHATSAPP LINK */
+    .whatsapp-section {
+      background: #0d1a0d;
+      padding: 24px;
+      border-left: 6px solid #25D366;
+      margin-top: 20px;
+    }
+    .whatsapp-btn {
+      display: inline-block;
+      background: #25D366;
+      color: white;
+      font-weight: 800;
+      padding: 14px 24px;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.3px;
+      transition: 0.2s;
+      margin-top: 12px;
+    }
+    .whatsapp-btn:hover {
+      background: #20bd5a;
+    }
+    
+    /* PAYMENT SUBMISSION FORM */
+    .payment-form {
+      background: #111111;
+      padding: 24px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #9a9a9a;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #ef1b2d;
+    }
+    .form-group select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239a9a9a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 16px;
+    }
+    .btn {
+      width: 100%;
+      background: #ef1b2d;
+      color: white;
+      font-weight: 800;
+      padding: 16px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      font-family: 'Barlow Condensed', sans-serif;
+      border: 2px solid transparent;
+      transition: 0.2s;
+      margin-top: 8px;
+    }
+    .btn:hover {
+      background: #d01526;
+    }
+    .btn:disabled {
+      background: #444;
+      cursor: not-allowed;
+    }
+    
+    /* ALERTS */
+    .alert {
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      display: none;
+    }
+    .alert-error {
+      background: #2a0a0a;
+      border-left: 3px solid #ef1b2d;
+      color: #ff4444;
+    }
+    .alert-success {
+      background: #0a2a0a;
+      border-left: 3px solid #2cd07e;
+      color: #2cd07e;
+    }
+    
+    /* SPINNER */
+    .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #fff;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* BOTTOM NAV */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #101010;
+      border-top: 1px solid #242424;
+      display: flex;
+      justify-content: space-around;
+      padding: 14px 8px;
+      z-index: 150;
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #8a8a8a;
+      font-size: 0.8rem;
+      text-decoration: none;
+      gap: 6px;
+    }
+    .nav-item i {
+      font-size: 1.5rem;
+    }
+    .nav-item:hover, .active {
+      color: #ef1b2d;
+    }
+    
+    /* TESTIMONIES */
+    .testimonial-form {
+      background: #111111;
+      padding: 24px;
+    }
+    
+    /* HISTORY TABLES */
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .table th {
+      text-align: left;
+      color: #aaa;
+      border-bottom: 2px solid #242424;
+      padding: 12px 6px;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+    .table td {
+      padding: 14px 6px;
+      border-bottom: 1px solid #1b1b1b;
+    }
+    
+    /* NOTIFICATION TOGGLES */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+      background: #111111;
+      margin-bottom: 12px;
+    }
+    .toggle-label {
+      font-weight: 600;
+    }
+    .toggle-sub {
+      color: #9a9a9a;
+      font-size: 0.85rem;
+    }
+    .switch {
+      position: relative;
+      width: 52px;
+      height: 28px;
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
+      cursor: pointer;
+      transition: 0.3s;
+      flex-shrink: 0;
+    }
+    .switch.active {
+      background: #ef1b2d;
+      border-color: #ef1b2d;
+    }
+    .switch::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      background: white;
+      transition: 0.3s;
+    }
+    .switch.active::after {
+      left: 27px;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 30px 12px 120px;
+      color: #8a8a8a;
+      border-top: 1px solid #242424;
+      font-size: 0.9rem;
+    }
+    footer a {
+      color: #f7f7f7;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="logo-wrapper">
+      <img src="sports.png" alt="logo">
+      <span class="nav-brand">Boujee</span>
+    </div>
+    <button id="logoutBtn" class="logout-btn"><i class="fa-solid fa-sign-out-alt"></i> Log out</button>
+  </div>
+
+  <div class="container">
+    <!-- PROFILE HEADER -->
+    <section class="profile-header">
+      <div id="avatarCircle" class="avatar-circle">?</div>
+      <h1 id="profileName" class="profile-name">Loading...</h1>
+      <p id="profileEmail" class="profile-email">Loading...</p>
+    </section>
+
+    <!-- MEMBERSHIP STATUS -->
+    <section class="section">
+      <div class="section-header"><i class="fa-solid fa-crown" style="color:#ef1b2d;"></i> Membership</div>
+      <div id="membershipCard" class="membership-card">
+        <div id="membershipStatus" class="membership-status status-free">FREE</div>
+        <div id="membershipDetails" class="membership-details">Free account - upgrade to access premium content</div>
+        <div id="membershipActions">
+          <a href="#" id="upgradeBtn" class="membership-cta"><i class="fa-solid fa-rocket"></i> Upgrade to Premium</a>
+        </div>
+      </div>
+
+      <!-- WHATSAPP LINK (for paid users) -->
+      <div id="whatsappSection" class="whatsapp-section hidden">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <i class="fa-brands fa-whatsapp" style="font-size:2rem;color:#25D366;"></i>
+          <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;">Private Community</h3>
+        </div>
+        <p style="color:#9a9a9a;margin-bottom:16px;">You have access to the private WhatsApp community. Join using the link below:</p>
+        <a id="whatsappLinkBtn" href="#" target="_blank" class="whatsapp-btn"><i class="fa-brands fa-whatsapp"></i> Join WhatsApp Group</a>
+      </div>
+    </section>
+
+    <!-- SUBMIT PAYMENT (for upgrading) -->
+    <section id="paymentSection" class="section hidden">
+      <div class="section-header"><i class="fa-solid fa-credit-card"></i> Submit Payment</div>
+      <div class="payment-form">
+        <p style="color:#9a9a9a;margin-bottom:20px;">Send your payment via mobile money and submit the details below. Your membership will be activated after review.</p>
+        
+        <div class="form-group">
+          <label for="paymentNetwork">Payment Network</label>
+          <select id="paymentNetwork">
+            <option value="">Select network</option>
+            <option value="mtn">MTN Mobile Money</option>
+            <option value="airtel">Airtel Money</option>
+            <option value="vodafone">Vodafone Cash</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="paymentPhone">Sender Phone Number</label>
+          <input type="tel" id="paymentPhone" placeholder="e.g. +256 700 000 000">
+        </div>
+        
+        <div class="form-group">
+          <label for="paymentAmount">Amount Claimed (UGX)</label>
+          <input type="number" id="paymentAmount" placeholder="e.g. 50000" min="0" step="1000">
+        </div>
+        
+        <div class="form-group">
+          <label for="paymentSmsText">SMS Confirmation Text</label>
+          <textarea id="paymentSmsText" rows="4" placeholder="Paste the full SMS confirmation message from your mobile money provider here"></textarea>
+        </div>
+        
+        <button id="submitPaymentBtn" class="btn">
+          <span class="btn-text">Submit Payment Proof</span>
+          <span class="spinner"></span>
+        </button>
+        
+        <div id="paymentAlert" class="alert" style="margin-top:16px;"></div>
+      </div>
+    </section>
+
+    <!-- PUSH NOTIFICATIONS -->
+    <section class="section">
+      <div class="section-header"><i class="fa-solid fa-bell"></i> Notifications</div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">Push Notifications</div>
+          <div class="toggle-sub">Get notified when new picks are posted</div>
+        </div>
+        <div id="pushToggle" class="switch"></div>
+      </div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">Email Notifications</div>
+          <div class="toggle-sub">Receive updates via email</div>
+        </div>
+        <div id="emailToggle" class="switch"></div>
+      </div>
+    </section>
+
+    <!-- SUBMIT TESTIMONY -->
+    <section class="section">
+      <div class="section-header"><i class="fa-solid fa-comment-dots"></i> Share Your Experience</div>
+      <div class="testimonial-form">
+        <div class="form-group">
+          <label for="testimonyText">Your Testimony</label>
+          <textarea id="testimonyText" rows="4" placeholder="Share your experience with Boujee Sports..."></textarea>
+        </div>
+        <button id="submitTestimonyBtn" class="btn">
+          <span class="btn-text">Submit Testimony</span>
+          <span class="spinner"></span>
+        </button>
+        <div id="testimonyAlert" class="alert" style="margin-top:16px;"></div>
+      </div>
+    </section>
+
+    <!-- ACCOUNT HISTORY -->
+    <section class="section">
+      <div class="section-header"><i class="fa-solid fa-clock-rotate-left"></i> Payment History</div>
+      <div id="paymentHistory">
+        <p style="color:#9a9a9a;">Loading your payment history...</p>
+      </div>
+    </section>
+
+    <!-- ACCOUNT INFO -->
+    <section class="section">
+      <div class="section-header"><i class="fa-solid fa-user"></i> Account Info</div>
+      <table class="table">
+        <tr>
+          <td style="color:#9a9a9a;">UID</td>
+          <td id="userUid">-</td>
+        </tr>
+        <tr>
+          <td style="color:#9a9a9a;">Member Since</td>
+          <td id="memberSince">-</td>
+        </tr>
+        <tr>
+          <td style="color:#9a9a9a;">Membership Status</td>
+          <td id="memberStatusCell">-</td>
+        </tr>
+      </table>
+    </section>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a href="/" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="/#channel" class="nav-item"><i class="fa-solid fa-tower-broadcast"></i><span>Channel</span></a>
+    <a href="/#pick" class="nav-item"><i class="fa-solid fa-bullseye"></i><span>Tracker</span></a>
+    <a href="#" class="nav-item active"><i class="fa-solid fa-user-circle"></i><span>Account</span></a>
+  </nav>
+
+  <footer>
+    <p><a href="/terms-policy.html">Terms &amp; Policy</a> · <a href="mailto:support@boujeesports.com">support@boujeesports.com</a></p>
+    <p style="margin:12px 0;">Betting involves financial risk and is intended for adults only.</p>
+  </footer>
+
+  <!-- FIREBASE MODULES -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js';
+    import { 
+      getAuth, 
+      onAuthStateChanged, 
+      signOut 
+    } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDtzlIfae9EjRZyaZZfndKTBFMuM8AJJcw",
+      authDomain: "boujee-sports.firebaseapp.com",
+      projectId: "boujee-sports",
+      storageBucket: "boujee-sports.firebasestorage.app",
+      messagingSenderId: "346736321644",
+      appId: "1:346736321644:web:342d0bb713657bb2886449"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // DOM Elements
+    const logoutBtn = document.getElementById('logoutBtn');
+    const profileName = document.getElementById('profileName');
+    const profileEmail = document.getElementById('profileEmail');
+    const avatarCircle = document.getElementById('avatarCircle');
+    const userUid = document.getElementById('userUid');
+    const memberSince = document.getElementById('memberSince');
+    const memberStatusCell = document.getElementById('memberStatusCell');
+    const membershipStatus = document.getElementById('membershipStatus');
+    const membershipDetails = document.getElementById('membershipDetails');
+    const membershipActions = document.getElementById('membershipActions');
+    const upgradeBtn = document.getElementById('upgradeBtn');
+    const whatsappSection = document.getElementById('whatsappSection');
+    const paymentSection = document.getElementById('paymentSection');
+    const pushToggle = document.getElementById('pushToggle');
+    const emailToggle = document.getElementById('emailToggle');
+
+    // Global state
+    let currentUser = null;
+    let userDoc = null;
+
+    // Check auth state
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        currentUser = user;
+        loadProfile();
+      } else {
+        window.location.href = '/signin.html';
+      }
+    });
+
+    // Logout
+    logoutBtn.addEventListener('click', async () => {
+      await signOut(auth);
+      window.location.href = '/';
+    });
+
+    // Load profile data
+    async function loadProfile() {
+      try {
+        // Set basic user info
+        profileName.textContent = currentUser.email ? currentUser.email.split('@')[0] : 'User';
+        profileEmail.textContent = currentUser.email || 'No email';
+        userUid.textContent = currentUser.uid;
+        avatarCircle.textContent = profileName.textContent.charAt(0).toUpperCase();
+
+        // Get ID token for API calls
+        const idToken = await currentUser.getIdToken();
+        
+        // Get session from API (creates user doc if needed)
+        const sessionRes = await fetch('/api/auth/session', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${idToken}`
+          }
+        });
+        
+        if (sessionRes.ok) {
+          const sessionData = await sessionRes.json();
+          userDoc = { id: sessionData.uid, email: sessionData.email, membership: sessionData.membership };
+          updateMembershipUI();
+        }
+        
+        // Load payment history
+        loadPaymentHistory(idToken);
+        
+        // Load push subscription state
+        loadPushSubscriptionState(idToken);
+        
+      } catch (error) {
+        console.error('Error loading profile:', error);
+        showAlert('profileAlert', 'Error loading profile. Please refresh.', 'error');
+      }
+    }
+
+    // Update membership UI
+    function updateMembershipUI() {
+      if (!userDoc) return;
+      
+      const isPaid = userDoc.membership?.status === 'paid';
+      
+      if (isPaid) {
+        membershipStatus.textContent = 'PREMIUM';
+        membershipStatus.className = 'membership-status status-paid';
+        membershipDetails.textContent = `Active member${userDoc.membership?.renewsAt ? ` · Renews: ${new Date(userDoc.membership.renewsAt).toLocaleDateString()}` : ''}`;
+        membershipActions.innerHTML = '';
+        whatsappSection.classList.remove('hidden');
+        loadWhatsAppLink();
+      } else {
+        membershipStatus.textContent = 'FREE';
+        membershipStatus.className = 'membership-status status-free';
+        membershipDetails.textContent = 'Free account - upgrade to access premium content';
+        paymentSection.classList.remove('hidden');
+      }
+      
+      memberStatusCell.textContent = isPaid ? 'Paid Member' : 'Free Member';
+    }
+
+    // Load WhatsApp link for paid users
+    async function loadWhatsAppLink() {
+      try {
+        const idToken = await currentUser.getIdToken();
+        const res = await fetch('/api/whatsapp-link', {
+          headers: { 'Authorization': `Bearer ${idToken}` }
+        });
+        
+        if (res.ok) {
+          const data = await res.json();
+          const whatsappLinkBtn = document.getElementById('whatsappLinkBtn');
+          whatsappLinkBtn.href = data.whatsappLink;
+        }
+      } catch (error) {
+        console.error('Error loading WhatsApp link:', error);
+      }
+    }
+
+    // Load payment history
+    async function loadPaymentHistory(idToken) {
+      try {
+        // This would need a new API endpoint or Firestore query
+        const paymentHistory = document.getElementById('paymentHistory');
+        paymentHistory.innerHTML = '<p style="color:#9a9a9a;">No payment history yet.</p>';
+      } catch (error) {
+        console.error('Error loading payment history:', error);
+      }
+    }
+
+    // Submit payment proof
+    const submitPaymentBtn = document.getElementById('submitPaymentBtn');
+    submitPaymentBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      
+      const network = document.getElementById('paymentNetwork').value;
+      const smsText = document.getElementById('paymentSmsText').value.trim();
+      const claimedAmount = document.getElementById('paymentAmount').value;
+      
+      if (!network || !smsText || !claimedAmount) {
+        showAlert('paymentAlert', 'Please fill in all required fields.', 'error');
+        return;
+      }
+      
+      // Show loading
+      submitPaymentBtn.disabled = true;
+      submitPaymentBtn.querySelector('.spinner').style.display = 'block';
+      submitPaymentBtn.querySelector('.btn-text').style.display = 'none';
+      
+      try {
+        const idToken = await currentUser.getIdToken();
+        const res = await fetch('/api/payments/submit', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${idToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ network, smsText, claimedAmount: parseFloat(claimedAmount) })
+        });
+        
+        if (res.ok) {
+          showAlert('paymentAlert', 'Payment submitted successfully! Your membership will be activated after review.', 'success');
+          document.getElementById('paymentNetwork').value = '';
+          document.getElementById('paymentSmsText').value = '';
+          document.getElementById('paymentAmount').value = '';
+        } else {
+          const data = await res.json();
+          showAlert('paymentAlert', data.error || 'Failed to submit payment.', 'error');
+        }
+      } catch (error) {
+        console.error('Error submitting payment:', error);
+        showAlert('paymentAlert', 'Network error. Please try again.', 'error');
+      } finally {
+        submitPaymentBtn.disabled = false;
+        submitPaymentBtn.querySelector('.spinner').style.display = 'none';
+        submitPaymentBtn.querySelector('.btn-text').style.display = 'inline';
+      }
+    });
+
+    // Submit testimony
+    const submitTestimonyBtn = document.getElementById('submitTestimonyBtn');
+    submitTestimonyBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      
+      const text = document.getElementById('testimonyText').value.trim();
+      if (!text) {
+        showAlert('testimonyAlert', 'Please write your testimony.', 'error');
+        return;
+      }
+      
+      // Show loading
+      submitTestimonyBtn.disabled = true;
+      submitTestimonyBtn.querySelector('.spinner').style.display = 'block';
+      submitTestimonyBtn.querySelector('.btn-text').style.display = 'none';
+      
+      try {
+        const idToken = await currentUser.getIdToken();
+        // Get current post ID (you'd need to pass this from context or have a "currently viewing" post)
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('postId');
+        
+        if (!postId) {
+          showAlert('testimonyAlert', 'No post selected. Please go to a post to leave a testimony.', 'error');
+        } else {
+          const res = await fetch('/api/testimonies', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${idToken}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ postId, text })
+          });
+          
+          if (res.ok) {
+            showAlert('testimonyAlert', 'Testimony submitted successfully! It will appear after approval.', 'success');
+            document.getElementById('testimonyText').value = '';
+          } else {
+            const data = await res.json();
+            showAlert('testimonyAlert', data.error || 'Failed to submit testimony.', 'error');
+          }
+        }
+      } catch (error) {
+        console.error('Error submitting testimony:', error);
+        showAlert('testimonyAlert', 'Network error. Please try again.', 'error');
+      } finally {
+        submitTestimonyBtn.disabled = false;
+        submitTestimonyBtn.querySelector('.spinner').style.display = 'none';
+        submitTestimonyBtn.querySelector('.btn-text').style.display = 'inline';
+      }
+    });
+
+    // Push notification toggle
+    pushToggle.addEventListener('click', async () => {
+      if (!('Notification' in window)) {
+        showAlert('profileAlert', 'Notifications not supported in this browser.', 'error');
+        return;
+      }
+      
+      if (Notification.permission !== 'granted') {
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') {
+          showAlert('profileAlert', 'Notification permission denied.', 'error');
+          return;
+        }
+      }
+      
+      // You'd need to load the push worker and get subscription
+      // This is a placeholder - the actual implementation requires the VAPID public key
+      // and the push worker script
+      showAlert('profileAlert', 'Push notifications setup requires additional configuration.', 'info');
+      
+      pushToggle.classList.toggle('active');
+    });
+
+    // Email toggle
+    emailToggle.addEventListener('click', () => {
+      emailToggle.classList.toggle('active');
+      // Would save preference to Firestore
+    });
+
+    // Alert helper
+    function showAlert(id, message, type = 'error') {
+      const alertEl = document.getElementById(id);
+      if (alertEl) {
+        alertEl.className = `alert alert-${type}`;
+        alertEl.textContent = message;
+        alertEl.style.display = 'block';
+        setTimeout(() => { alertEl.style.display = 'none'; }, 5000);
+      }
+    }
+
+    // Load push subscription state
+    async function loadPushSubscriptionState(idToken) {
+      try {
+        // Check if user has push subscriptions
+        const sessionRes = await fetch('/api/auth/session', {
+          headers: { 'Authorization': `Bearer ${idToken}` }
+        });
+        const data = await sessionRes.json();
+        
+        if (data.pushSubscriptions && data.pushSubscriptions.length > 0) {
+          pushToggle.classList.add('active');
+        }
+      } catch (error) {
+        console.error('Error loading push state:', error);
+      }
+    }
+  </script>
+</body>
+</html>
