@@ -65,6 +65,7 @@
     .dropdown {
       position: relative;
       display: inline-block;
+      display: none; /* hidden until admin confirmed */
     }
     .dropdown-btn {
       background: transparent;
@@ -118,44 +119,85 @@
     .dropdown-item i {
       margin-right: 8px;
     }
-    /* SECTIONS */
-    .section {
-      padding: 24px 0;
-      border-bottom: 1px solid #242424;
+    /* AUTH CARD */
+    .auth-card {
+      background: #111111;
+      border: 1px solid #242424;
+      padding: 32px 24px;
+      margin: 20px auto;
+      max-width: 480px;
     }
-    .section-header {
-      font-size: 2rem;
+    .auth-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .auth-header img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      margin-bottom: 12px;
+    }
+    .auth-header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    /* Tabs */
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 24px;
+      border-bottom: 2px solid #242424;
+    }
+    .auth-tab {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
       font-weight: 700;
       text-transform: uppercase;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      letter-spacing: 0.6px;
+      cursor: pointer;
+      color: #9a9a9a;
+      border: none;
+      background: transparent;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.5px;
+      transition: 0.2s;
+    }
+    .auth-tab.active {
       color: #ef1b2d;
+      border-bottom: 2px solid #ef1b2d;
     }
-    /* TABLES */
-    .table {
-      width: 100%;
-      border-collapse: collapse;
+    .form-group {
+      margin-bottom: 20px;
     }
-    .table th {
-      text-align: left;
-      color: #aaa;
-      border-bottom: 2px solid #242424;
-      padding: 12px 6px;
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #9a9a9a;
+      font-size: 0.9rem;
       text-transform: uppercase;
-      font-size: 0.8rem;
+      letter-spacing: 0.5px;
     }
-    .table td {
-      padding: 14px 6px;
-      border-bottom: 1px solid #1b1b1b;
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: 0.2s;
+      font-family: 'Inter', sans-serif;
     }
-    .table td.actions {
-      display: flex;
-      gap: 8px;
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #ef1b2d;
     }
-    /* BUTTONS */
+    /* Buttons */
     .btn {
       background: #ef1b2d;
       color: white;
@@ -198,54 +240,7 @@
       background: #ef1b2d;
       color: white;
     }
-    /* FORMS */
-    .form-group {
-      margin-bottom: 20px;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      color: #9a9a9a;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: 14px;
-      background: #1a1a1a;
-      border: 1px solid #2a2a2a;
-      color: #fff;
-      font-size: 1rem;
-      outline: none;
-      transition: 0.2s;
-      font-family: 'Inter', sans-serif;
-    }
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      border-color: #ef1b2d;
-    }
-    .form-group select {
-      appearance: none;
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239a9a9a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-      background-repeat: no-repeat;
-      background-position: right 14px center;
-      background-size: 16px;
-    }
-    /* CARDS */
-    .card {
-      background: #111111;
-      padding: 20px;
-      border-left: 4px solid #ef1b2d;
-      margin-bottom: 20px;
-    }
-    .hidden {
-      display: none;
-    }
-    /* ALERT */
+    /* Alert */
     .alert {
       padding: 12px 16px;
       margin: 16px 0;
@@ -260,6 +255,10 @@
       background: #0a2a0a;
       border-left: 3px solid #2cd07e;
       color: #2cd07e;
+    }
+    /* Hidden */
+    .hidden {
+      display: none;
     }
     /* Skeleton */
     .skeleton {
@@ -278,7 +277,45 @@
       0% { transform: translateX(-100%); }
       100% { transform: translateX(100%); }
     }
-    /* BOTTOM NAV (optional) */
+    /* Sections */
+    .section {
+      padding: 24px 0;
+      border-bottom: 1px solid #242424;
+    }
+    .section-header {
+      font-size: 2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: 0.6px;
+      color: #ef1b2d;
+    }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .table th {
+      text-align: left;
+      color: #aaa;
+      border-bottom: 2px solid #242424;
+      padding: 12px 6px;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+    .table td {
+      padding: 14px 6px;
+      border-bottom: 1px solid #1b1b1b;
+    }
+    .card {
+      background: #111111;
+      padding: 20px;
+      border-left: 4px solid #ef1b2d;
+      margin-bottom: 20px;
+    }
+    /* Bottom nav */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -320,7 +357,7 @@
 </head>
 <body>
 
-  <!-- TOP BAR with dropdown -->
+  <!-- TOP BAR -->
   <div class="topbar">
     <div class="logo-wrapper">
       <img src="sports.png" alt="logo">
@@ -341,7 +378,50 @@
   </div>
 
   <div class="container">
-    <!-- CLAIM FORM (shown if not admin) -->
+    <!-- AUTH CARD (visible when not logged in) -->
+    <div id="authCard" class="auth-card hidden">
+      <div class="auth-header">
+        <img src="sports.png" alt="Boujee Sports">
+        <h1>Admin Login</h1>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="register">Register</button>
+      </div>
+      <div id="authAlert" class="alert hidden"></div>
+
+      <!-- Login Form -->
+      <form id="loginForm">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="loginEmail" required placeholder="you@example.com">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" required placeholder="Your password">
+        </div>
+        <button type="submit" class="btn" style="width:100%;"><i class="fa-solid fa-sign-in-alt"></i> Sign In</button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="registerForm" style="display:none;">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="registerEmail" required placeholder="you@example.com">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="registerPassword" required placeholder="Minimum 6 characters">
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <input type="password" id="confirmPassword" required placeholder="Re-enter password">
+        </div>
+        <button type="submit" class="btn" style="width:100%;"><i class="fa-solid fa-user-plus"></i> Register</button>
+      </form>
+    </div>
+
+    <!-- CLAIM FORM (visible when logged in but not admin) -->
     <div id="claimSection" class="section hidden">
       <div class="section-header"><i class="fa-solid fa-key"></i> Admin Claim</div>
       <div class="card">
@@ -446,7 +526,7 @@
     </div>
   </div>
 
-  <!-- BOTTOM NAV (optional) -->
+  <!-- BOTTOM NAV -->
   <nav class="bottom-nav">
     <a href="/" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
     <a href="/#channel" class="nav-item"><i class="fa-solid fa-tower-broadcast"></i><span>Channel</span></a>
@@ -464,6 +544,8 @@
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js';
     import { 
       getAuth, 
+      createUserWithEmailAndPassword, 
+      signInWithEmailAndPassword,
       onAuthStateChanged, 
       signOut 
     } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js';
@@ -480,11 +562,15 @@
     const auth = getAuth(app);
 
     // DOM elements
+    const authCard = document.getElementById('authCard');
+    const claimSection = document.getElementById('claimSection');
+    const adminDashboard = document.getElementById('adminDashboard');
     const dropdownBtn = document.getElementById('dropdownBtn');
     const dropdownContent = document.getElementById('dropdownContent');
     const logoutBtn = document.getElementById('logoutBtn');
-    const claimSection = document.getElementById('claimSection');
-    const adminDashboard = document.getElementById('adminDashboard');
+    const authAlert = document.getElementById('authAlert');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
     const claimBtn = document.getElementById('claimBtn');
     const claimCode = document.getElementById('claimCode');
     const claimAlert = document.getElementById('claimAlert');
@@ -493,21 +579,42 @@
     let currentUser = null;
     let isAdmin = false;
 
-    // Check auth
-    onAuthStateChanged(auth, async user => {
-      if (!user) {
-        window.location.href = '/signin.html';
-        return;
-      }
-      currentUser = user;
-      checkAdminStatus();
+    // Tab switching
+    const tabs = document.querySelectorAll('.auth-tab');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        if (tab.dataset.tab === 'login') {
+          loginForm.style.display = 'block';
+          registerForm.style.display = 'none';
+        } else {
+          loginForm.style.display = 'none';
+          registerForm.style.display = 'block';
+        }
+        hideAuthAlert();
+      });
     });
 
-    // Check if user is admin by calling a protected endpoint
+    // Auth state listener
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        currentUser = user;
+        authCard.classList.add('hidden');
+        checkAdminStatus();
+      } else {
+        currentUser = null;
+        authCard.classList.remove('hidden');
+        claimSection.classList.add('hidden');
+        adminDashboard.classList.add('hidden');
+        dropdownBtn.style.display = 'none';
+      }
+    });
+
+    // Check admin status by calling protected endpoint
     async function checkAdminStatus() {
       try {
         const idToken = await currentUser.getIdToken();
-        // Try to fetch pending payments (only admin can access)
         const res = await fetch('/api/admin/payments', {
           headers: { 'Authorization': `Bearer ${idToken}` }
         });
@@ -515,11 +622,9 @@
           isAdmin = true;
           adminDashboard.classList.remove('hidden');
           claimSection.classList.add('hidden');
-          // Load initial data
+          dropdownBtn.style.display = 'flex';
           loadPayments();
           loadTestimonies();
-          // Show dropdown
-          dropdownBtn.style.display = 'flex';
         } else if (res.status === 403) {
           // Not admin, show claim form
           isAdmin = false;
@@ -527,37 +632,75 @@
           claimSection.classList.remove('hidden');
           dropdownBtn.style.display = 'none';
         } else {
-          // Other error (maybe 401), redirect
-          window.location.href = '/signin.html';
+          // Other errors (e.g., 401) - sign out?
+          await signOut(auth);
         }
       } catch (error) {
         console.error('Error checking admin:', error);
-        showAlert(claimAlert, 'Error checking admin status. Please refresh.', 'error');
       }
     }
 
-    // Dropdown toggle
-    dropdownBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      dropdownContent.classList.toggle('show');
-    });
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.dropdown')) {
-        dropdownContent.classList.remove('show');
+    // Login handler
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      if (!email || !password) {
+        showAuthAlert('Please enter email and password.', 'error');
+        return;
+      }
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        // onAuthStateChanged will handle the rest
+      } catch (error) {
+        showAuthAlert(parseAuthError(error), 'error');
       }
     });
 
-    // Logout
-    logoutBtn.addEventListener('click', async () => {
-      await signOut(auth);
-      window.location.href = '/';
+    // Register handler
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('registerEmail').value.trim();
+      const password = document.getElementById('registerPassword').value;
+      const confirm = document.getElementById('confirmPassword').value;
+      if (!email || !password || !confirm) {
+        showAuthAlert('Please fill all fields.', 'error');
+        return;
+      }
+      if (password.length < 6) {
+        showAuthAlert('Password must be at least 6 characters.', 'error');
+        return;
+      }
+      if (password !== confirm) {
+        showAuthAlert('Passwords do not match.', 'error');
+        return;
+      }
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        // onAuthStateChanged will handle the rest
+      } catch (error) {
+        showAuthAlert(parseAuthError(error), 'error');
+      }
     });
+
+    // Parse Firebase auth errors
+    function parseAuthError(error) {
+      switch (error.code) {
+        case 'auth/email-already-in-use': return 'Email already registered.';
+        case 'auth/invalid-email': return 'Invalid email.';
+        case 'auth/weak-password': return 'Password too weak.';
+        case 'auth/user-not-found': return 'No account found with this email.';
+        case 'auth/wrong-password': return 'Incorrect password.';
+        case 'auth/too-many-requests': return 'Too many attempts. Try again later.';
+        default: return error.message || 'Authentication error.';
+      }
+    }
 
     // Claim admin
     claimBtn.addEventListener('click', async () => {
       const code = claimCode.value.trim();
       if (!code) {
-        showAlert(claimAlert, 'Please enter the claim code.', 'error');
+        showClaimAlert('Please enter the claim code.', 'error');
         return;
       }
       claimBtn.disabled = true;
@@ -573,19 +716,36 @@
         });
         const data = await res.json();
         if (res.ok) {
-          showAlert(claimAlert, 'Admin access granted! Refreshing...', 'success');
+          showClaimAlert('Admin access granted! Refreshing...', 'success');
           setTimeout(() => location.reload(), 1500);
         } else {
-          showAlert(claimAlert, data.error || 'Claim failed.', 'error');
+          showClaimAlert(data.error || 'Claim failed.', 'error');
         }
       } catch (error) {
-        showAlert(claimAlert, 'Network error.', 'error');
+        showClaimAlert('Network error.', 'error');
       } finally {
         claimBtn.disabled = false;
       }
     });
 
-    // Dropdown section navigation
+    // Dropdown toggle
+    dropdownBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdownContent.classList.toggle('show');
+    });
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.dropdown')) {
+        dropdownContent.classList.remove('show');
+      }
+    });
+
+    // Logout
+    logoutBtn.addEventListener('click', async () => {
+      await signOut(auth);
+      // onAuthStateChanged will handle UI
+    });
+
+    // Section navigation
     document.querySelectorAll('.dropdown-item[data-section]').forEach(item => {
       item.addEventListener('click', (e) => {
         e.preventDefault();
@@ -596,13 +756,10 @@
     });
 
     function showSection(section) {
-      // Hide all sections
       ['payments', 'members', 'testimonies', 'posts'].forEach(s => {
         document.getElementById(s + 'Section').classList.add('hidden');
       });
-      // Show selected
       document.getElementById(section + 'Section').classList.remove('hidden');
-      // Load data if needed
       if (section === 'payments') loadPayments();
       if (section === 'testimonies') loadTestimonies();
     }
@@ -748,7 +905,7 @@
     grantBtn.addEventListener('click', async () => {
       const uid = document.getElementById('memberUid').value.trim();
       if (!uid) {
-        showAlert(membersAlert, 'Please enter a UID.', 'error');
+        showMembersAlert('Please enter a UID.', 'error');
         return;
       }
       try {
@@ -758,20 +915,20 @@
           headers: { 'Authorization': `Bearer ${idToken}` }
         });
         if (res.ok) {
-          showAlert(membersAlert, 'Membership granted!', 'success');
+          showMembersAlert('Membership granted!', 'success');
         } else {
           const data = await res.json();
-          showAlert(membersAlert, data.error || 'Grant failed.', 'error');
+          showMembersAlert(data.error || 'Grant failed.', 'error');
         }
       } catch (error) {
-        showAlert(membersAlert, 'Network error.', 'error');
+        showMembersAlert('Network error.', 'error');
       }
     });
 
     revokeBtn.addEventListener('click', async () => {
       const uid = document.getElementById('memberUid').value.trim();
       if (!uid) {
-        showAlert(membersAlert, 'Please enter a UID.', 'error');
+        showMembersAlert('Please enter a UID.', 'error');
         return;
       }
       try {
@@ -781,20 +938,20 @@
           headers: { 'Authorization': `Bearer ${idToken}` }
         });
         if (res.ok) {
-          showAlert(membersAlert, 'Membership revoked!', 'success');
+          showMembersAlert('Membership revoked!', 'success');
         } else {
           const data = await res.json();
-          showAlert(membersAlert, data.error || 'Revoke failed.', 'error');
+          showMembersAlert(data.error || 'Revoke failed.', 'error');
         }
       } catch (error) {
-        showAlert(membersAlert, 'Network error.', 'error');
+        showMembersAlert('Network error.', 'error');
       }
     });
 
     deleteUserBtn.addEventListener('click', async () => {
       const uid = document.getElementById('deleteUid').value.trim();
       if (!uid) {
-        showAlert(membersAlert, 'Please enter a UID.', 'error');
+        showMembersAlert('Please enter a UID.', 'error');
         return;
       }
       if (!confirm('Are you sure you want to permanently delete this user?')) return;
@@ -805,14 +962,14 @@
           headers: { 'Authorization': `Bearer ${idToken}` }
         });
         if (res.ok) {
-          showAlert(membersAlert, 'User deleted!', 'success');
+          showMembersAlert('User deleted!', 'success');
           document.getElementById('deleteUid').value = '';
         } else {
           const data = await res.json();
-          showAlert(membersAlert, data.error || 'Delete failed.', 'error');
+          showMembersAlert(data.error || 'Delete failed.', 'error');
         }
       } catch (error) {
-        showAlert(membersAlert, 'Network error.', 'error');
+        showMembersAlert('Network error.', 'error');
       }
     });
 
@@ -826,7 +983,6 @@
     const postStake = document.getElementById('postStake');
     const postsAlert = document.getElementById('postsAlert');
 
-    // Show/hide pick fields based on type
     postType.addEventListener('change', () => {
       document.getElementById('pickFields').classList.toggle('hidden', postType.value !== 'pick');
     });
@@ -835,7 +991,7 @@
       e.preventDefault();
       const body = postBody.value.trim();
       if (!body) {
-        showAlert(postsAlert, 'Body is required.', 'error');
+        showPostsAlert('Body is required.', 'error');
         return;
       }
       const payload = {
@@ -859,29 +1015,49 @@
           body: JSON.stringify(payload)
         });
         if (res.ok) {
-          showAlert(postsAlert, 'Post created successfully!', 'success');
+          showPostsAlert('Post created successfully!', 'success');
           createPostForm.reset();
           document.getElementById('pickFields').classList.add('hidden');
         } else {
           const data = await res.json();
-          showAlert(postsAlert, data.error || 'Failed to create post.', 'error');
+          showPostsAlert(data.error || 'Failed to create post.', 'error');
         }
       } catch (error) {
-        showAlert(postsAlert, 'Network error.', 'error');
+        showPostsAlert('Network error.', 'error');
       }
     });
 
-    // Helper to show alert
-    function showAlert(element, message, type) {
-      if (!element) return;
-      element.textContent = message;
-      element.className = `alert alert-${type}`;
-      element.classList.remove('hidden');
-      setTimeout(() => element.classList.add('hidden'), 5000);
+    // Alert helpers
+    function showAuthAlert(message, type) {
+      authAlert.textContent = message;
+      authAlert.className = `alert alert-${type}`;
+      authAlert.classList.remove('hidden');
+      setTimeout(() => authAlert.classList.add('hidden'), 5000);
+    }
+    function hideAuthAlert() {
+      authAlert.classList.add('hidden');
+    }
+    function showClaimAlert(message, type) {
+      claimAlert.textContent = message;
+      claimAlert.className = `alert alert-${type}`;
+      claimAlert.classList.remove('hidden');
+      setTimeout(() => claimAlert.classList.add('hidden'), 5000);
+    }
+    function showMembersAlert(message, type) {
+      membersAlert.textContent = message;
+      membersAlert.className = `alert alert-${type}`;
+      membersAlert.classList.remove('hidden');
+      setTimeout(() => membersAlert.classList.add('hidden'), 5000);
+    }
+    function showPostsAlert(message, type) {
+      postsAlert.textContent = message;
+      postsAlert.className = `alert alert-${type}`;
+      postsAlert.classList.remove('hidden');
+      setTimeout(() => postsAlert.classList.add('hidden'), 5000);
     }
 
-    // Initial state: hide dropdown until admin confirmed
+    // Initial state
     dropdownBtn.style.display = 'none';
   </script>
 </body>
-</html>
+  </html>
