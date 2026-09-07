@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Boujee Sports — Premium picks & live tracker</title>
+  <meta name="description" content="Boujee Sports: free picks, exclusive channel, transparent record, membership">
+  <meta property="og:title" content="Boujee Sports">
+  <meta property="og:image" content="open.jpg">
+  <meta property="og:description" content="Transparent record, sharp picks, free daily selection.">
+  <link rel="icon" href="sports.png">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      border-radius: 0 !important;
+    }
+    body {
+      background: #050505;
+      color: #f7f7f7;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.5;
+      padding-bottom: 95px;
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+    h1, h2, h3, .stat-number, .nav-brand, .pick-odds, .time-ago {
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.4px;
+    }
+    /* TOP BAR */
+    .topbar {
+      background: #111111;
+      border-bottom: 1px solid #242424;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 60;
+    }
+    .logo-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .topbar img {
+      height: 34px;
+      width: 34px;
+      object-fit: contain;
+    }
+    .nav-brand {
+      font-weight: 800;
+      font-size: 1.8rem;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .auth-link {
+      color: #ef1b2d;
+      font-weight: 700;
+      text-decoration: none;
+      background: #1a1a1a;
+      padding: 8px 14px;
+      border: 1px solid #ef1b2d;
+      transition: 0.2s;
+      font-size: 0.95rem;
+    }
+    .auth-link:hover {
+      background: #ef1b2d;
+      color: white;
+    }
+    /* HERO with background image hero.jpg */
+    .hero {
+      padding: 48px 0 32px;
+      background: linear-gradient(to right, rgba(0,0,0,0.85), rgba(0,0,0,0.7)), url('hero.jpg') center/cover no-repeat;
+      border-bottom: 1px solid #242424;
+      position: relative;
+    }
+    .hero-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 24px;
+    }
+    .hero-content {
+      flex: 1 1 250px;
+    }
+    .hero h1 {
+      font-size: 3.4rem;
+      font-weight: 800;
+      line-height: 0.95;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.7);
+    }
+    .hero p {
+      color: #dbdbdb;
+      margin: 18px 0 26px;
+      font-size: 1.15rem;
+      font-weight: 500;
+      max-width: 380px;
+    }
+    .cta-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      background: #ef1b2d;
+      color: white;
+      font-weight: 800;
+      padding: 16px 24px;
+      text-decoration: none;
+      font-size: 1rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      font-family: 'Barlow Condensed', sans-serif;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 2px solid transparent;
+      transition: 0.2s;
+    }
+    .btn-outline {
+      background: rgba(0,0,0,0.5);
+      border-color: #ef1b2d;
+      color: white;
+      backdrop-filter: blur(4px);
+    }
+    .btn:hover {
+      background: #d01526;
+    }
+    .btn-outline:hover {
+      background: #ef1b2d;
+    }
+    .hero-art {
+      flex: 0 0 160px;
+      text-align: center;
+      background: rgba(0,0,0,0.35);
+      padding: 8px;
+      border-left: 2px solid #ef1b2d;
+    }
+    .hero-art img {
+      width: 100%;
+      max-width: 160px;
+    }
+    /* skeleton */
+    .skeleton {
+      background: #1e1e1e;
+      position: relative;
+      overflow: hidden;
+    }
+    .skeleton::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+      animation: shimmer 1.4s infinite;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .section {
+      padding: 30px 0;
+      border-bottom: 1px solid #242424;
+    }
+    .section-header {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: 0.6px;
+    }
+    .pick-card {
+      background: #111111;
+      border-left: 6px solid #ef1b2d;
+      padding: 22px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.4);
+    }
+    .pick-body {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin: 16px 0;
+    }
+    .pick-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      color: #9a9a9a;
+      align-items: center;
+    }
+    .pick-odds {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #ef1b2d;
+      background: #1a1a1a;
+      padding: 8px 16px;
+      border: 1px solid #2a2a2a;
+    }
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      background: #1f1f1f;
+      border: 1px solid #242424;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .badge-won { color: #2cd07e; border-color: #2cd07e; }
+    .badge-lost { color: #ef1b2d; border-color: #ef1b2d; }
+    .badge-pending { color: #f0b34c; border-color: #f0b34c; }
+    /* record grid */
+    .record-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .stat-box {
+      background: #111111;
+      padding: 18px 6px;
+      text-align: center;
+      border-bottom: 2px solid #ef1b2d;
+    }
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 800;
+      color: white;
+    }
+    .stat-label {
+      color: #9a9a9a;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+    }
+    /* table */
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .table th {
+      text-align: left;
+      color: #aaa;
+      border-bottom: 2px solid #242424;
+      padding: 12px 6px;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+    .table td {
+      padding: 14px 6px;
+      border-bottom: 1px solid #1b1b1b;
+    }
+    .time-ago {
+      color: #9a9a9a;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+    }
+    /* channel items */
+    .channel-item {
+      background: #111111;
+      border-left: 4px solid #444;
+      margin-bottom: 18px;
+      padding: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .locked-item {
+      filter: blur(2px);
+      opacity: 0.55;
+      position: relative;
+    }
+    .upgrade-cta {
+      display: inline-block;
+      margin-top: 16px;
+      background: #ef1b2d;
+      padding: 12px 20px;
+      font-weight: 800;
+      text-decoration: none;
+      color: white;
+      text-transform: uppercase;
+      filter: none;
+      pointer-events: auto;
+      border: 1px solid #ef1b2d;
+    }
+    .upgrade-cta:hover {
+      background: #c71325;
+    }
+    .channel-info {
+      margin-top: 10px;
+      background: #0f0f0f;
+      padding: 10px;
+      font-size: 0.9rem;
+      color: #aaa;
+      border-left: 3px solid #ef1b2d;
+    }
+    /* COOKIE BANNER (redesigned) */
+    .cookie-banner {
+      position: fixed;
+      bottom: 85px;
+      left: 16px;
+      right: 16px;
+      background: #111111;
+      border: 1px solid #ef1b2d;
+      padding: 24px 20px;
+      z-index: 220;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .cookie-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .cookie-header img {
+      width: 40px;
+      height: 40px;
+      background: white;
+      padding: 4px;
+    }
+    .cookie-header h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.9rem;
+      letter-spacing: 0.8px;
+      color: #ef1b2d;
+    }
+    .cookie-text {
+      color: #cfcfcf;
+      font-size: 1rem;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    .cookie-actions {
+      display: flex;
+      gap: 14px;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+    .cookie-btn {
+      padding: 14px 28px;
+      font-weight: 700;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-family: 'Barlow Condensed', sans-serif;
+      transition: 0.2s;
+    }
+    .btn-accept {
+      background: #ef1b2d;
+      color: white;
+      border: 2px solid #ef1b2d;
+    }
+    .btn-accept:hover {
+      background: #ff3445;
+    }
+    .btn-reject {
+      background: transparent;
+      color: #f7f7f7;
+      border: 2px solid #444;
+    }
+    .btn-reject:hover {
+      background: #1f1f1f;
+      border-color: #ef1b2d;
+    }
+    /* bottom nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #101010;
+      border-top: 1px solid #242424;
+      display: flex;
+      justify-content: space-around;
+      padding: 14px 8px;
+      z-index: 150;
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #8a8a8a;
+      font-size: 0.8rem;
+      text-decoration: none;
+      gap: 6px;
+    }
+    .nav-item i {
+      font-size: 1.5rem;
+    }
+    .nav-item:hover, .active {
+      color: #ef1b2d;
+    }
+    footer {
+      text-align: center;
+      padding: 30px 12px 120px;
+      color: #8a8a8a;
+      border-top: 1px solid #242424;
+      font-size: 0.9rem;
+    }
+    footer a {
+      color: #f7f7f7;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <noscript><div style="background:#ef1b2d;padding:20px;text-align:center;color:white;">Please enable JavaScript to view Boujee Sports content.</div></noscript>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="logo-wrapper">
+      <img src="sports.png" alt="logo">
+      <span class="nav-brand">Boujee</span>
+    </div>
+    <a href="#" id="authTop" class="auth-link">Sign in</a>
+  </div>
+
+  <div class="container">
+    <!-- HERO with hero.jpg background -->
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <h1>Premium picks.<br>No excuses.</h1>
+          <p>Transparent tracker, strategic staking, and a private community channel.</p>
+          <div class="cta-group">
+            <a href="/signin.html" class="btn"><i class="fa-solid fa-user-plus"></i> Create free account</a>
+            <a href="#channel" class="btn btn-outline"><i class="fa-solid fa-tower-broadcast"></i> See the Channel</a>
+          </div>
+        </div>
+        <div class="hero-art">
+          <img src="Football Goal-bro.svg" alt="Football goal illustration">
+        </div>
+      </div>
+      <div style="margin-top:30px; background:#00000077; padding:12px; border-left:4px solid #ef1b2d;">
+        <span style="font-size:0.9rem; color:#fff;"><i class="fa-solid fa-shield-halved"></i> Bankroll strategy: 3.33% odd-2 / 1% odd-3 · transparency first</span>
+      </div>
+    </section>
+
+    <!-- TODAY'S PICK -->
+    <section class="section" id="pick">
+      <div class="section-header"><i class="fa-solid fa-bolt" style="color:#ef1b2d;"></i> Today's free pick</div>
+      <div id="pickSkel" class="pick-card skeleton" style="height:130px;"></div>
+      <div id="pickBox" class="hidden"></div>
+    </section>
+
+    <!-- LIVE RECORD -->
+    <section class="section">
+      <div class="section-header"><i class="fa-solid fa-chart-simple" style="color:#ef1b2d;"></i> Live record</div>
+      <div id="recordSkel" class="record-grid">
+        <div class="stat-box skeleton" style="height:85px;"></div>
+        <div class="stat-box skeleton" style="height:85px;"></div>
+        <div class="stat-box skeleton" style="height:85px;"></div>
+        <div class="stat-box skeleton" style="height:85px;"></div>
+      </div>
+      <div id="recordGrid" class="record-grid hidden"></div>
+    </section>
+
+    <!-- RECENT RESULTS -->
+    <section class="section">
+      <div class="section-header"><i class="fa-solid fa-list-check"></i> Recent results</div>
+      <div id="resSkel" style="height:120px;" class="skeleton"></div>
+      <div id="resTable" class="hidden"></div>
+    </section>
+
+    <!-- CHANNEL -->
+    <section class="section" id="channel">
+      <div class="section-header"><i class="fa-solid fa-broadcast-tower"></i> Boujee Channel</div>
+      <div id="chanSkel">
+        <div class="channel-item skeleton" style="height:85px;"></div>
+        <div class="channel-item skeleton" style="height:85px;"></div>
+      </div>
+      <div id="channelBox" class="hidden"></div>
+    </section>
+  </div>
+
+  <!-- COOKIE BANNER (redesigned, buttons below text) -->
+  <div id="cookieBanner" class="cookie-banner hidden">
+    <div class="cookie-header">
+      <img src="cookie.png" alt="cookie">
+      <h3>We value your privacy</h3>
+    </div>
+    <div class="cookie-text">
+      We use cookies to enhance your experience, analyse traffic and remember your preferences. By accepting you agree to our cookie policy.
+    </div>
+    <div class="cookie-actions">
+      <button id="acceptCookieBtn" class="cookie-btn btn-accept">Accept</button>
+      <button id="rejectCookieBtn" class="cookie-btn btn-reject">Reject</button>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a href="#" class="nav-item active"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="#channel" class="nav-item"><i class="fa-solid fa-tower-broadcast"></i><span>Channel</span></a>
+    <a href="#pick" class="nav-item"><i class="fa-solid fa-bullseye"></i><span>Tracker</span></a>
+    <a href="/signin.html" id="bottomAuth" class="nav-item"><i class="fa-solid fa-user"></i><span>Account</span></a>
+  </nav>
+
+  <footer>
+    <p><a href="/terms-policy.html">Terms &amp; Policy</a> · <a href="mailto:support@boujeesports.com">support@boujeesports.com</a></p>
+    <p style="margin:12px 0;">Betting involves financial risk and is intended for adults only.</p>
+    <p>Illustrations by <a href="https://storyset.com" target="_blank">Storyset</a></p>
+  </footer>
+
+  <!-- FIREBASE MODULES -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js';
+    import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDtzlIfae9EjRZyaZZfndKTBFMuM8AJJcw",
+      authDomain: "boujee-sports.firebaseapp.com",
+      projectId: "boujee-sports",
+      storageBucket: "boujee-sports.firebasestorage.app",
+      messagingSenderId: "346736321644",
+      appId: "1:346736321644:web:342d0bb713657bb2886449"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const authTop = document.getElementById('authTop');
+    const bottomAuth = document.getElementById('bottomAuth');
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        authTop.textContent = 'My account';
+        authTop.href = '/profile.html';
+        bottomAuth.href = '/profile.html';
+        bottomAuth.innerHTML = '<i class="fa-solid fa-user-circle"></i><span>Account</span>';
+      } else {
+        authTop.textContent = 'Sign in';
+        authTop.href = '/signin.html';
+        bottomAuth.href = '/signin.html';
+        bottomAuth.innerHTML = '<i class="fa-solid fa-user"></i><span>Account</span>';
+      }
+      // Re-run once we know the real auth state, so /api/posts gets the
+      // login token when there is one (needed to unlock paid content for
+      // a signed-in paid member instead of always showing it as locked).
+      loadData();
+    });
+
+    // utilities
+    window.utils = {
+      escapeHtml: (str) => { const div = document.createElement('div'); div.textContent = str ?? ''; return div.innerHTML; },
+      timeAgo: (dateStr) => {
+        const d = new Date(dateStr); const mins = Math.floor((Date.now() - d.getTime())/60000);
+        if(mins<60) return mins+'m ago'; const h=Math.floor(mins/60); if(h<24) return h+'h ago'; return Math.floor(h/24)+'d ago';
+      }
+    };
+
+    window.api = {
+      async fetchPosts() {
+        const headers = {};
+        // FIX: attach the Firebase ID token when signed in, so the backend
+        // can tell if this visitor is a paid member and unlock their content.
+        if (auth.currentUser) {
+          headers.Authorization = `Bearer ${await auth.currentUser.getIdToken()}`;
+        }
+        const r = await fetch('/api/posts', { headers });
+        return r.json();
+      },
+      async fetchSummary() { const r = await fetch('/api/results/summary'); return r.json(); }
+    };
+
+    window.initCookieConsent = () => {
+      const banner = document.getElementById('cookieBanner');
+      if (!localStorage.getItem('cookieConsent')) banner.classList.remove('hidden');
+      document.getElementById('acceptCookieBtn').addEventListener('click', () => {
+        localStorage.setItem('cookieConsent', 'accepted'); banner.classList.add('hidden');
+      });
+      document.getElementById('rejectCookieBtn').addEventListener('click', () => {
+        localStorage.setItem('cookieConsent', 'rejected'); banner.classList.add('hidden');
+      });
+    };
+
+    async function loadData() {
+      try {
+        const [postsData, summaryData] = await Promise.all([window.api.fetchPosts(), window.api.fetchSummary()]);
+
+        // free pick
+        const pickBox = document.getElementById('pickBox');
+        document.getElementById('pickSkel').classList.add('hidden');
+        const freePick = postsData.posts.find(p => p.type === 'pick' && p.tier === 'free');
+        if (freePick) {
+          const resultCls = freePick.result?.outcome === 'won' ? 'badge-won' : freePick.result?.outcome === 'lost' ? 'badge-lost' : 'badge-pending';
+          pickBox.classList.remove('hidden');
+          // FIX: no fabricated fallback odds - show "—" like the results
+          // table already correctly does when there's genuinely no value.
+          pickBox.innerHTML = `<div class="pick-card">
+            <div class="pick-body">${window.utils.escapeHtml(freePick.body)}</div>
+            <div class="pick-meta">
+              <span class="pick-odds">${freePick.result?.odds ?? '—'}</span>
+              <span class="badge ${resultCls}">${(freePick.result?.outcome || 'pending').toUpperCase()}</span>
+              <span class="time-ago">${window.utils.timeAgo(freePick.createdAt)}</span>
+            </div>
+            <div class="channel-info"><i class="fa-solid fa-database"></i> Stake rule: 3.33% (odd-2) / 1% (odd-3)</div>
+          </div>`;
+        } else {
+          pickBox.classList.remove('hidden');
+          pickBox.innerHTML = `<div class="pick-card">No free pick available today. Check back later.</div>`;
+        }
+
+        // record
+        document.getElementById('recordSkel').classList.add('hidden');
+        const rec = document.getElementById('recordGrid');
+        rec.classList.remove('hidden');
+        rec.innerHTML = `
+          <div class="stat-box"><div class="stat-number">${summaryData.wins}</div><div class="stat-label">Wins</div></div>
+          <div class="stat-box"><div class="stat-number">${summaryData.losses}</div><div class="stat-label">Losses</div></div>
+          <div class="stat-box"><div class="stat-number">${summaryData.winPercentage}%</div><div class="stat-label">Win rate</div></div>
+          <div class="stat-box"><div class="stat-number">${summaryData.wins+summaryData.losses}</div><div class="stat-label">Tracked</div></div>
+        `;
+
+        // recent results (5 latest picks)
+        document.getElementById('resSkel').classList.add('hidden');
+        const recent = postsData.posts.filter(p=>p.type==='pick').slice(0,5);
+        const rt = document.getElementById('resTable');
+        rt.classList.remove('hidden');
+        if (recent.length===0) rt.innerHTML = '<p>No results yet.</p>';
+        else rt.innerHTML = `<table class="table"><thead><tr><th>When</th><th>Outcome</th><th>Odds</th></tr></thead><tbody>${recent.map(p=>{
+          const o = p.result?.outcome||'pending';
+          const cls = o==='won'?'badge-won':o==='lost'?'badge-lost':'badge-pending';
+          return `<tr><td>${window.utils.timeAgo(p.createdAt)}</td><td><span class="badge ${cls}">${o.toUpperCase()}</span></td><td>${p.result?.odds||'—'}</td></tr>`;
+        }).join('')}</tbody></table>`;
+
+        // channel
+        document.getElementById('chanSkel').classList.add('hidden');
+        const nonPick = postsData.posts.filter(p=>p.type!=='pick');
+        const chan = document.getElementById('channelBox');
+        chan.classList.remove('hidden');
+        if (!nonPick.length) chan.innerHTML = '<p>No channel posts yet.</p>';
+        else chan.innerHTML = nonPick.map(p => {
+          let body = window.utils.escapeHtml(typeof p.body === 'string' ? p.body : '');
+          // FIX: the API already returns table posts as a real object
+          // ({rows: [...]}), not a JSON string - JSON.parse-ing an object
+          // fails silently, which was leaving table posts blank.
+          if (p.type === 'table' && p.body && typeof p.body === 'object' && Array.isArray(p.body.rows)) {
+            body = `<table class="table"><tbody>${p.body.rows.map(r=>`<tr>${r.map(c=>`<td>${window.utils.escapeHtml(String(c))}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+          }
+          const lockedBlock = p.locked ? `<div style="margin-top:14px;"><a href="/signin.html" class="upgrade-cta"><i class="fa-solid fa-lock"></i> Upgrade</a></div>` : '';
+          return `<div class="channel-item ${p.locked?'locked-item':''}">${body}${lockedBlock}</div>`;
+        }).join('');
+      } catch(e) {
+        document.getElementById('pickSkel').classList.add('hidden');
+        document.getElementById('recordSkel').classList.add('hidden');
+        document.getElementById('resSkel').classList.add('hidden');
+        document.getElementById('chanSkel').classList.add('hidden');
+        document.getElementById('pickBox').innerHTML='<p>Unable to load data.</p>';
+      }
+    }
+
+    window.initCookieConsent();
+  </script>
+</body>
+</html>
