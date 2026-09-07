@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In / Register | Boujee Sports</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="sports.png" />
+
+  <!-- External Stylesheet (Shared) -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    :root {
+      --bg-color: #050505;
+      --panel-bg: #111111;
+      --hairline: #242424;
+      --text-main: #f7f7f7;
+      --accent-red: #ef1b2d;
+      --muted-grey: #8a8a8a;
+    }
+
+    * {
+      box-sizing: border-box;
+      border-radius: 0 !important;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 0 0 10px 0;
+    }
+
+    a {
+      color: var(--text-main);
+      text-decoration: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .brand-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .brand-header img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      margin-bottom: 8px;
+    }
+
+    .brand-header h1 {
+      font-size: 2rem;
+      margin: 0;
+    }
+
+    .panel {
+      background: var(--panel-bg);
+      border: 1px solid var(--hairline);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .tab-switcher {
+      display: flex;
+      border-bottom: 1px solid var(--hairline);
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--muted-grey);
+      padding: 12px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      color: var(--text-main);
+      border-bottom-color: var(--accent-red);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--muted-grey);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: var(--bg-color);
+      border: 1px solid var(--hairline);
+      color: var(--text-main);
+      padding: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-control:focus {
+      border-color: var(--text-main);
+    }
+
+    .btn-cta {
+      width: 100%;
+      background: var(--accent-red);
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.2s;
+      margin-top: 10px;
+    }
+
+    .btn-cta:hover:not(:disabled) {
+      background: #d01424;
+    }
+
+    .btn-cta:disabled {
+      background: #444444;
+      color: #888888;
+      cursor: not-allowed;
+    }
+
+    .alert-box {
+      padding: 12px;
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+      border: 1px solid transparent;
+      display: none;
+    }
+
+    .alert-danger {
+      background: #2a080c;
+      border-color: var(--accent-red);
+      color: #ff8888;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    footer {
+      border-top: 1px solid var(--hairline);
+      padding: 20px 16px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted-grey);
+    }
+
+    footer a {
+      color: var(--muted-grey);
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="brand-header">
+      <img src="sports.png" alt="Boujee Sports Logo" />
+      <h1>Boujee Sports</h1>
+    </div>
+
+    <div class="panel">
+      <!-- Auth Switcher Tabs -->
+      <div class="tab-switcher">
+        <button type="button" id="tabSignin" class="tab-btn active">Sign In</button>
+        <button type="button" id="tabRegister" class="tab-btn">Register</button>
+      </div>
+
+      <div id="authAlert" class="alert-box alert-danger"></div>
+
+      <!-- Auth Form -->
+      <form id="authForm" novalidate>
+        <div class="form-group">
+          <label for="authEmail">Email Address</label>
+          <input type="email" id="authEmail" class="form-control" placeholder="name@example.com" required />
+        </div>
+
+        <div class="form-group">
+          <label for="authPassword">Password</label>
+          <input type="password" id="authPassword" class="form-control" placeholder="••••••••" required />
+        </div>
+
+        <button type="submit" id="submitAuthBtn" class="btn-cta">
+          <i class="fa-solid fa-right-to-bracket"></i> <span id="btnText">Sign In</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Boujee Sports. All rights reserved.</p>
+    <p><a href="terms-policy.html">Terms & Policy</a> | Support: <a href="mailto:support@boujeesports.com">support@boujeesports.com</a></p>
+  </footer>
+
+  <!-- External Configuration Module -->
+  <script type="module" src="config.js"></script>
+
+  <!-- Single File Auth Logic -->
+  <script type="module">
+    document.addEventListener("DOMContentLoaded", () => {
+      let isLoginMode = true;
+
+      // UI Elements
+      const tabSignin = document.getElementById("tabSignin");
+      const tabRegister = document.getElementById("tabRegister");
+      const authForm = document.getElementById("authForm");
+      const authEmail = document.getElementById("authEmail");
+      const authPassword = document.getElementById("authPassword");
+      const submitAuthBtn = document.getElementById("submitAuthBtn");
+      const btnText = document.getElementById("btnText");
+      const authAlert = document.getElementById("authAlert");
+
+      // Extract redirect URI from query string or default to /profile.html
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirectTarget = urlParams.get("redirect") || "/profile.html";
+
+      // Redirect away if already signed in
+      if (window.auth && typeof window.auth.onAuthStateChanged === "function") {
+        window.auth.onAuthStateChanged((user) => {
+          if (user) {
+            window.location.replace(redirectTarget);
+          }
+        });
+      }
+
+      // Mode Switchers
+      tabSignin.addEventListener("click", () => setMode(true));
+      tabRegister.addEventListener("click", () => setMode(false));
+
+      function setMode(loginMode) {
+        isLoginMode = loginMode;
+        authAlert.style.display = "none";
+        if (isLoginMode) {
+          tabSignin.classList.add("active");
+          tabRegister.classList.remove("active");
+          btnText.textContent = "Sign In";
+        } else {
+          tabRegister.classList.add("active");
+          tabSignin.classList.remove("active");
+          btnText.textContent = "Create Account";
+        }
+      }
+
+      // Form Handler
+      authForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        authAlert.style.display = "none";
+
+        const email = authEmail.value.trim();
+        const password = authPassword.value;
+
+        if (!email || !password) {
+          showError("Please fill in both email and password.");
+          return;
+        }
+
+        if (password.length < 6) {
+          showError("Password must be at least 6 characters.");
+          return;
+        }
+
+        submitAuthBtn.disabled = true;
+        submitAuthBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Processing...`;
+
+        try {
+          if (isLoginMode) {
+            // Firebase Sign In
+            if (window.signInWithEmailAndPassword && window.auth) {
+              await window.signInWithEmailAndPassword(window.auth, email, password);
+            } else if (window.auth && typeof window.auth.signInWithEmailAndPassword === "function") {
+              await window.auth.signInWithEmailAndPassword(email, password);
+            } else {
+              throw new Error("Authentication module not loaded properly.");
+            }
+          } else {
+            // Firebase Account Creation
+            if (window.createUserWithEmailAndPassword && window.auth) {
+              await window.createUserWithEmailAndPassword(window.auth, email, password);
+            } else if (window.auth && typeof window.auth.createUserWithEmailAndPassword === "function") {
+              await window.auth.createUserWithEmailAndPassword(email, password);
+            } else {
+              throw new Error("Authentication module not loaded properly.");
+            }
+          }
+
+          // Successful auth triggers redirect via onAuthStateChanged
+          window.location.replace(redirectTarget);
+
+        } catch (err) {
+          console.error("Auth Error:", err);
+          showError(formatAuthError(err.code || err.message));
+          submitAuthBtn.disabled = false;
+          submitAuthBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> ${isLoginMode ? "Sign In" : "Create Account"}`;
+        }
+      });
+
+      function showError(msg) {
+        authAlert.textContent = msg;
+        authAlert.style.display = "block";
+      }
+
+      function formatAuthError(code) {
+        switch (code) {
+          case "auth/invalid-email":
+            return "Invalid email address format.";
+          case "auth/user-not-found":
+          case "auth/wrong-password":
+          case "auth/invalid-credential":
+            return "Invalid email or password.";
+          case "auth/email-already-in-use":
+            return "An account with this email already exists.";
+          case "auth/weak-password":
+            return "Password should be at least 6 characters.";
+          default:
+            return "Authentication failed. Please try again.";
+        }
+      }
+    });
+  </script>
+</body>
+</html>
