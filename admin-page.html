@@ -414,6 +414,7 @@
       </button>
       <div class="dropdown-content" id="dropdownContent">
         <a class="dropdown-item" data-section="payments"><i class="fa-solid fa-credit-card"></i> Payments</a>
+        <a class="dropdown-item" data-section="withdrawals"><i class="fa-solid fa-money-bill-transfer"></i> Withdrawals</a>
         <a class="dropdown-item" data-section="members"><i class="fa-solid fa-users"></i> Members</a>
         <a class="dropdown-item" data-section="testimonies"><i class="fa-solid fa-comment-dots"></i> Testimonies</a>
         <a class="dropdown-item" data-section="posts"><i class="fa-solid fa-newspaper"></i> Posts</a>
@@ -490,6 +491,14 @@
       <section id="paymentsSection" class="section">
         <div class="section-header"><i class="fa-solid fa-credit-card"></i> Pending Payments</div>
         <div id="paymentsTableContainer">
+          <div class="skeleton" style="height:100px;"></div>
+        </div>
+      </section>
+
+      <!-- WITHDRAWALS SECTION -->
+      <section id="withdrawalsSection" class="section hidden">
+        <div class="section-header"><i class="fa-solid fa-money-bill-transfer"></i> Pending Withdrawals</div>
+        <div id="withdrawalsTableContainer">
           <div class="skeleton" style="height:100px;"></div>
         </div>
       </section>
@@ -608,12 +617,12 @@
   </nav>
 
   <footer>
-    <p><a href="/terms-policy.html">Terms &amp; Policy</a> · <a href="mailto:support@boujeesports.com">support@boujeesports.com</a></p>
+    <p><a href="/terms-policy.html">Terms &amp; Policy</a> · <a href="/cdn-cgi/l/email-protection#15666065657a676155777a607f707066657a6761663b767a78"><span class="__cf_email__" data-cfemail="4635333636293432062429332c23233536293432356825292b">[email&#160;protected]</span></a></p>
     <p style="margin:12px 0;">© 2026 Boujee Sports. All rights reserved.</p>
   </footer>
 
   <!-- FIREBASE MODULES -->
-  <script type="module">
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js';
     import { 
       getAuth, 
@@ -879,11 +888,12 @@
     });
 
     function showSection(section) {
-      ['payments', 'members', 'testimonies', 'posts'].forEach(s => {
+      ['payments', 'withdrawals', 'members', 'testimonies', 'posts'].forEach(s => {
         document.getElementById(s + 'Section').classList.add('hidden');
       });
       document.getElementById(section + 'Section').classList.remove('hidden');
       if (section === 'payments') loadPayments();
+      if (section === 'withdrawals') loadWithdrawals();
       if (section === 'testimonies') loadTestimonies();
     }
 
@@ -943,6 +953,73 @@
         });
         if (res.ok) loadPayments();
         else alert('Action failed.');
+      } catch (error) {
+        console.error(error);
+        alert('Network error.');
+      }
+    }
+
+    // Load withdrawals
+    async function loadWithdrawals() {
+      const container = document.getElementById('withdrawalsTableContainer');
+      container.innerHTML = '<div class="skeleton" style="height:100px;"></div>';
+      try {
+        const idToken = await currentUser.getIdToken();
+        const res = await fetch('/referrals/api/referrals/admin/withdrawals?status=pending', {
+          headers: { 'Authorization': `Bearer ${idToken}` }
+        });
+        if (!res.ok) throw new Error('Failed to load withdrawals');
+        const data = await res.json();
+        const withdrawals = data.withdrawals || [];
+        if (withdrawals.length === 0) {
+          container.innerHTML = '<p style="color:#9a9a9a;">No pending withdrawals.</p>';
+          return;
+        }
+        const table = `
+          <table class="table">
+            <thead><tr><th>User</th><th>Amount</th><th>Network</th><th>Number</th><th>Name</th><th>Submitted</th><th>Actions</th></tr></thead>
+            <tbody>
+              ${withdrawals.map(w => `
+                <tr>
+                  <td>${w.uid}</td>
+                  <td>UGX ${w.amount.toLocaleString()}</td>
+                  <td>${w.network}</td>
+                  <td>${w.momoNumber}</td>
+                  <td>${w.accountName}</td>
+                  <td>${new Date(w.createdAt).toLocaleDateString()}</td>
+                  <td class="actions">
+                    <button class="btn btn-green approve-withdrawal" data-id="${w.id}">Approve</button>
+                    <button class="btn btn-red reject-withdrawal" data-id="${w.id}">Reject</button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+        container.innerHTML = table;
+        document.querySelectorAll('.approve-withdrawal').forEach(btn => {
+          btn.addEventListener('click', () => handleWithdrawalAction(btn.dataset.id, 'approve'));
+        });
+        document.querySelectorAll('.reject-withdrawal').forEach(btn => {
+          btn.addEventListener('click', () => handleWithdrawalAction(btn.dataset.id, 'reject'));
+        });
+      } catch (error) {
+        container.innerHTML = '<p class="alert alert-error">Error loading withdrawals.</p>';
+      }
+    }
+
+    async function handleWithdrawalAction(id, action) {
+      try {
+        const idToken = await currentUser.getIdToken();
+        const res = await fetch(`/referrals/api/referrals/admin/withdrawals/${id}/${action}`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${idToken}` }
+        });
+        if (res.ok) loadWithdrawals();
+        else {
+          const data = await res.json().catch(() => ({}));
+          alert(data.error || 'Action failed.');
+        }
       } catch (error) {
         console.error(error);
         alert('Network error.');
@@ -1254,4 +1331,4 @@
     renderTable(); // initial render (hidden but ready)
   </script>
 </body>
-  </html>
+</html>
