@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -20,30 +20,73 @@
 
 <link rel="icon" href="sports.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- ============================================================
+     Google Fonts: Inter
+     Closest free webfont to SF Pro Display / Helvetica Neue.
+     Apple devices still get real SF Pro via the system stack below.
+     ============================================================ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --bg:#050505; --panel:#111111; --panel2:#171717; --line:#242424;
   --text:#f7f7f7; --muted:#8a8a8a; --red:#ef1b2d; --green:#2fbf71; --amber:#ffb020;
+
+  /* ============================================================
+     FONT STACK
+     Priority order:
+       1. -apple-system / BlinkMacSystemFont  → real SF Pro on Apple devices
+       2. 'SF Pro Display' / 'SF Pro Text'    → direct name match
+       3. 'Helvetica Neue' / Helvetica / Arial → Helvetica where available
+       4. 'Inter'                              → Google Fonts webfont (everywhere else)
+       5. system-ui / sans-serif               → last-resort fallback
+     ============================================================ */
+  --font-main:
+    -apple-system, BlinkMacSystemFont,
+    'SF Pro Display', 'SF Pro Text',
+    'Helvetica Neue', Helvetica, Arial,
+    'Inter', system-ui, sans-serif;
+
+  --font-display: var(--font-main);
 }
+
 *{box-sizing:border-box;margin:0;padding:0;border-radius:0!important}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.5;padding-bottom:95px}
+
+body{
+  background:var(--bg);color:var(--text);
+  font-family:var(--font-main);
+  line-height:1.5;padding-bottom:95px;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:1000px;margin:0 auto;padding:0 18px}
-h1,h2,h3,.stat-number,.pick-odds,.time-ago{font-family:'Barlow Condensed',sans-serif;letter-spacing:.3px}
+
+h1,h2,h3,.stat-number,.pick-odds,.time-ago{
+  font-family:var(--font-display);
+  letter-spacing:-.01em;
+}
+h1,h2,h3{font-weight:800}
 
 /* topbar */
 .topbar{background:#111;border-bottom:1px solid var(--line);padding:12px 0;position:sticky;top:0;z-index:60;backdrop-filter:blur(10px)}
 .topbar-inner{display:flex;align-items:center;justify-content:space-between}
 .logo-wrap{display:flex;align-items:center;gap:10px}
 .logo-wrap img{width:34px;height:34px}
-.logo-wrap span{font-weight:800;font-size:20px;text-transform:uppercase}
+.logo-wrap span{font-family:var(--font-display);font-weight:900;font-size:20px;text-transform:uppercase;letter-spacing:-.02em}
 .logo-wrap span i{color:var(--red);font-style:normal}
-.auth-link{color:var(--red);font-weight:700;background:#1a1a1a;padding:9px 14px;border:1px solid var(--red);font-size:.9rem}
+.auth-link{font-family:var(--font-main);color:var(--red);font-weight:700;background:#1a1a1a;padding:9px 14px;border:1px solid var(--red);font-size:.9rem}
 
 /* buttons */
-.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 20px;font-weight:800;font-family:'Barlow Condensed',sans-serif;font-size:1rem;text-transform:uppercase;letter-spacing:.4px;border:2px solid transparent;cursor:pointer}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;padding:14px 20px;
+  font-weight:700;font-family:var(--font-display);font-size:.95rem;
+  text-transform:uppercase;letter-spacing:.02em;border:2px solid transparent;cursor:pointer;
+}
 .btn-red{background:var(--red);color:#fff}
 .btn-red:hover{background:#d01526}
 .btn-outline{background:transparent;border-color:#3a3a3a;color:#fff}
@@ -52,8 +95,8 @@ h1,h2,h3,.stat-number,.pick-odds,.time-ago{font-family:'Barlow Condensed',sans-s
 /* hero */
 .hero{padding:48px 0 32px;border-bottom:1px solid var(--line);background:linear-gradient(to right, rgba(0,0,0,.88), rgba(0,0,0,.75)), url('hero.jpg') center/cover no-repeat}
 .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:start}
-.eyebrow{color:var(--red);font-size:12px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase}
-.hero h1{font-size:clamp(34px,5vw,54px);line-height:1;margin:12px 0 14px}
+.eyebrow{font-family:var(--font-main);color:var(--red);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.hero h1{font-size:clamp(34px,5vw,54px);line-height:1.05;margin:12px 0 14px;letter-spacing:-.03em}
 .hero p{color:#c7c7c7;max-width:520px;font-size:1.05rem}
 .cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
 .micro{margin-top:12px;color:#777;font-size:12px}
@@ -61,58 +104,62 @@ h1,h2,h3,.stat-number,.pick-odds,.time-ago{font-family:'Barlow Condensed',sans-s
 .project-card{background:var(--panel2);border:1px solid #343434;padding:22px}
 .project-title{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .project-title h2{font-size:26px}
-.live-badge{display:inline-flex;gap:7px;align-items:center;color:#fff;background:#2a0e0e;border:1px solid #572020;padding:7px 10px;font-size:11px;font-weight:800}
+.live-badge{display:inline-flex;gap:7px;align-items:center;color:#fff;background:#2a0e0e;border:1px solid #572020;padding:7px 10px;font-size:11px;font-weight:800;font-family:var(--font-main);letter-spacing:.08em}
 .dot{width:7px;height:7px;background:var(--red)}
-.big-stat{font-size:38px;font-weight:800;margin:20px 0 3px}
-.label{font-size:11px;color:#868686;text-transform:uppercase;letter-spacing:1px}
+.big-stat{font-family:var(--font-display);font-size:38px;font-weight:800;margin:20px 0 3px;letter-spacing:-.03em}
+.label{font-family:var(--font-main);font-size:11px;color:#868686;text-transform:uppercase;letter-spacing:.1em}
 .progress{height:12px;background:#232323;overflow:hidden;margin:16px 0 6px}
 .progress>div{height:100%;background:linear-gradient(90deg,var(--red),#ff6a55)}
 .progress-meta{display:flex;justify-content:space-between;color:#a4a4a4;font-size:12px}
-.progress-meta strong{color:#fff}
+.progress-meta strong{color:#fff;font-family:var(--font-display)}
 .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
 .kpi{background:#0d0d0d;border:1px solid #252525;padding:12px}
-.kpi strong{display:block;font-size:16px;margin-top:4px}
+.kpi strong{display:block;font-family:var(--font-display);font-size:16px;margin-top:4px}
 
 /* sections */
 section.sec{padding:40px 0;border-bottom:1px solid var(--line)}
 .section-head{margin-bottom:20px}
-.section-head h2{font-size:28px;margin-bottom:6px}
+.section-head h2{font-size:28px;margin-bottom:6px;letter-spacing:-.02em}
 .section-head p{color:var(--muted);max-width:560px;line-height:1.6;font-size:.9rem}
 
 /* free pick / cards */
 .card{background:var(--panel);border:1px solid var(--line);padding:18px}
 .free-pick{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap}
-.pick-teams{font-size:20px;font-weight:800;font-family:'Barlow Condensed',sans-serif}
+.pick-teams{font-family:var(--font-display);font-size:20px;font-weight:800}
 .pick-meta-line{color:var(--muted);font-size:12px;margin-top:5px}
 
 /* table */
 .table-wrap{overflow-x:auto;border:1px solid var(--line);background:#0f0f0f}
-table{width:100%;border-collapse:collapse;min-width:640px}
+table{width:100%;border-collapse:collapse;min-width:640px;font-family:var(--font-main)}
 th,td{padding:13px 14px;border-bottom:1px solid #202020;text-align:left;font-size:13px}
-th{color:#8f8f8f;font-size:11px;text-transform:uppercase;letter-spacing:.7px;background:#121212}
-.win{color:var(--green);font-weight:800}
-.loss{color:#ff6767;font-weight:800}
-.pending{color:var(--amber);font-weight:800}
+th{color:#8f8f8f;font-size:11px;text-transform:uppercase;letter-spacing:.08em;background:#121212;font-family:var(--font-main)}
+.win{color:var(--green);font-weight:700}
+.loss{color:#ff6767;font-weight:700}
+.pending{color:var(--amber);font-weight:700}
 
 /* calculator */
 .calculator{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .calc-box{background:var(--panel);border:1px solid var(--line);padding:20px}
-.calc-box input{width:100%;background:#090909;border:1px solid #343434;color:#fff;padding:14px;font-size:19px;font-weight:700;margin-top:8px;font-family:'Inter',sans-serif}
+.calc-box input{
+  width:100%;background:#090909;border:1px solid #343434;color:#fff;
+  padding:14px;font-size:19px;font-weight:700;margin-top:8px;
+  font-family:var(--font-main);
+}
 .calc-results{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
 .calc-result{background:#090909;border:1px solid #2a2a2a;padding:14px}
-.calc-result strong{font-size:20px;display:block;margin-top:6px}
+.calc-result strong{font-family:var(--font-display);font-size:20px;display:block;margin-top:6px}
 
 /* strategy */
 .strategy{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .strategy .card p{color:#a6a6a6;line-height:1.5;font-size:.88rem;margin-top:6px}
-.number{font-size:28px;font-weight:800;color:var(--red);font-family:'Barlow Condensed',sans-serif}
+.number{font-family:var(--font-display);font-size:28px;font-weight:900;color:var(--red);letter-spacing:-.02em}
 
 /* vip */
 .vip{background:linear-gradient(135deg,#1e0606,#111 55%);border:1px solid #4e1b1b;padding:26px;display:grid;grid-template-columns:1.15fr .85fr;gap:20px}
-.price{font-size:42px;font-weight:800}
-.price span{font-size:14px;color:#a7a7a7;font-weight:500}
+.price{font-family:var(--font-display);font-size:42px;font-weight:900;letter-spacing:-.03em}
+.price span{font-family:var(--font-main);font-size:14px;color:#a7a7a7;font-weight:500}
 .ticks{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:18px 0}
-.tick{color:#d7d7d7;font-size:.88rem}
+.tick{color:#d7d7d7;font-size:.88rem;font-family:var(--font-main)}
 .tick i{color:var(--green);margin-right:6px}
 .vip-side{background:#0c0c0c;border:1px solid #2a2a2a;padding:18px}
 .vip-side p{color:#999;line-height:1.6;font-size:.88rem;margin-bottom:14px}
@@ -125,7 +172,7 @@ th{color:#8f8f8f;font-size:11px;text-transform:uppercase;letter-spacing:.7px;bac
 /* history */
 .history{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .month-card{background:var(--panel);border:1px solid var(--line);padding:16px}
-.month-card .p{font-size:22px;font-weight:800;margin:8px 0}
+.month-card .p{font-family:var(--font-display);font-size:22px;font-weight:800;margin:8px 0}
 
 /* skeleton */
 .skeleton{background:linear-gradient(90deg,var(--panel) 25%,var(--panel2) 37%,var(--panel) 63%);background-size:400% 100%;animation:sk 1.4s ease infinite}
@@ -140,7 +187,7 @@ th{color:#8f8f8f;font-size:11px;text-transform:uppercase;letter-spacing:.7px;bac
 .cookie-text{color:#cfcfcf;font-size:.85rem;margin-bottom:16px;line-height:1.5}
 .cookie-actions{display:flex;gap:10px;flex-wrap:wrap}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#101010;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:10px 8px;z-index:150}
-.nav-item{display:flex;flex-direction:column;align-items:center;color:var(--muted);font-size:.75rem;gap:5px}
+.nav-item{display:flex;flex-direction:column;align-items:center;color:var(--muted);font-size:.75rem;gap:5px;font-family:var(--font-main)}
 .nav-item i{font-size:1.3rem}
 .nav-item.active{color:var(--red)}
 footer{padding:30px 0 20px;color:#7f7f7f;font-size:.85rem;border-top:1px solid var(--line)}
@@ -159,7 +206,7 @@ footer a{color:#f7f7f7}
 </div></div>
 
 <main>
-<!-- HERO - headline/copy static, Project 500K numbers computed from real data -->
+<!-- HERO - headline/copy static, Project 1M numbers computed from real data -->
 <section class="hero"><div class="wrap hero-grid">
   <div>
     <div class="eyebrow">Structured betting. Tracked results.</div>
@@ -173,7 +220,7 @@ footer a{color:#f7f7f7}
   </div>
   <div class="project-card">
     <div class="project-title">
-      <div><div class="label">Current project</div><h2>Project 500K</h2></div>
+      <div><div class="label">Current project</div><h2>Project 1M</h2></div>
       <span class="live-badge"><span class="dot"></span> LIVE</span>
     </div>
     <div id="projectSkel" class="skeleton" style="height:120px;margin-top:16px;"></div>
@@ -237,14 +284,14 @@ footer a{color:#f7f7f7}
         <div class="tick"><i class="fa-solid fa-check"></i>Odd 3 daily selections</div>
         <div class="tick"><i class="fa-solid fa-check"></i>Full performance tracker</div>
         <div class="tick"><i class="fa-solid fa-check"></i>Bankroll calculator</div>
-        <div class="tick"><i class="fa-solid fa-check"></i>Project 500K access</div>
+        <div class="tick"><i class="fa-solid fa-check"></i>Project 1M access</div>
         <div class="tick"><i class="fa-solid fa-check"></i>Private WhatsApp community</div>
       </div>
       <a href="/signin.html" class="btn btn-red">Join VIP &mdash; UGX 25,000</a>
     </div>
     <div class="vip-side">
       <h3 style="font-size:1.3rem;margin-bottom:8px">Start free first</h3>
-      <p>Create a free account to see the public tracker and follow Project 500K. Upgrade only when you're ready.</p>
+      <p>Create a free account to see the public tracker and follow Project 1M. Upgrade only when you're ready.</p>
       <a href="/signin.html" class="btn btn-outline" style="width:100%;justify-content:center">Create free account</a>
     </div>
   </div>
@@ -286,12 +333,12 @@ footer a{color:#f7f7f7}
 </nav>
 
 <footer><div class="wrap">
-  <p><a href="/terms-policy.html">Terms &amp; Policy</a> &middot; <a href="mailto:support@boujeesports.com">support@boujeesports.com</a></p>
+  <p><a href="/terms-policy.html">Terms &amp; Policy</a> &middot; <a href="/cdn-cgi/l/email-protection#63101613130c111723010c1609060610130c1117104d000c0e"><span class="__cf_email__" data-cfemail="6d1e181d1d021f192d0f02180708081e1d021f191e430e0200">[email&#160;protected]</span></a></p>
   <p style="margin:12px 0">Betting involves financial risk and is intended for adults only.</p>
   <p>Illustrations by <a href="https://storyset.com" target="_blank" rel="noopener">Storyset</a></p>
 </div></footer>
 
-<script type="module">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js';
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js';
 
@@ -306,7 +353,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const PROJECT_TARGET = 500000; // static label - the feature's actual name/goal, not a data value
+const PROJECT_TARGET = 1000000; // static label - the feature's actual name/goal, not a data value
 
 function escapeHtml(str){ const d=document.createElement('div'); d.textContent = str ?? ''; return d.innerHTML; }
 function money(n){ return 'UGX ' + Math.round(n).toLocaleString('en-US'); }
@@ -502,4 +549,4 @@ bankrollInput.addEventListener('input', updateCalc);
 updateCalc();
 </script>
 </body>
-</html>
+  </html>
