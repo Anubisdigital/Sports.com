@@ -190,6 +190,49 @@
     .whatsapp-btn:hover {
       background: #20bd5a;
     }
+
+    /* REFERRAL PROGRAM */
+    .referral-card {
+      background: #111111;
+      border-left: 6px solid #ef1b2d;
+      padding: 24px;
+    }
+    .referral-link-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .referral-link-row input {
+      flex: 1;
+      padding: 14px;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+    .referral-copy-btn {
+      background: #ef1b2d;
+      color: white;
+      font-weight: 800;
+      padding: 0 20px;
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-family: 'Barlow Condensed', sans-serif;
+    }
+    .referral-copy-btn:hover {
+      background: #d01526;
+    }
+    .referral-stat {
+      color: #9a9a9a;
+      font-size: 0.95rem;
+      border-top: 1px solid #242424;
+      padding-top: 16px;
+    }
+    .referral-stat strong {
+      color: #2cd07e;
+      font-size: 1.3rem;
+    }
     
     /* PAYMENT SUBMISSION FORM */
     .payment-form {
@@ -442,6 +485,21 @@
       </div>
     </section>
 
+    <!-- REFERRAL PROGRAM -->
+    <section class="section">
+      <div class="section-header"><i class="fa-solid fa-users" style="color:#ef1b2d;"></i> Referral Program</div>
+      <div class="referral-card">
+        <p style="color:#9a9a9a;margin-bottom:16px;">Share your link. Earn when the people you invite go VIP.</p>
+        <div class="referral-link-row">
+          <input type="text" id="referralLinkInput" readonly value="Loading...">
+          <button id="referralCopyBtn" class="referral-copy-btn"><i class="fa-solid fa-copy"></i></button>
+        </div>
+        <div class="referral-stat">
+          <i class="fa-solid fa-sack-dollar"></i> Available to withdraw: <strong id="referralAvailable">UGX 0</strong>
+        </div>
+      </div>
+    </section>
+
     <!-- SUBMIT PAYMENT (for upgrading) -->
     <section id="paymentSection" class="section hidden">
       <div class="section-header"><i class="fa-solid fa-credit-card"></i> Submit Payment</div>
@@ -554,12 +612,12 @@
   </nav>
 
   <footer>
-    <p><a href="/terms-policy.html">Terms &amp; Policy</a> · <a href="mailto:support@boujeesports.com">support@boujeesports.com</a></p>
+    <p><a href="/terms-policy.html">Terms &amp; Policy</a> · <a href="/cdn-cgi/l/email-protection#ccbfb9bcbca3beb88caea3b9a6a9a9bfbca3beb8bfe2afa3a1"><span class="__cf_email__" data-cfemail="0b787e7b7b64797f4b69647e616e6e787b64797f7825686466">[email&#160;protected]</span></a></p>
     <p style="margin:12px 0;">Betting involves financial risk and is intended for adults only.</p>
   </footer>
 
   <!-- FIREBASE MODULES -->
-  <script type="module">
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js';
     import { 
       getAuth, 
@@ -643,6 +701,7 @@
         
         // Load payment history
         loadPaymentHistory(idToken);
+        loadReferralInfo(idToken);
         
         // Load push subscription state
         loadPushSubscriptionState(idToken);
@@ -704,6 +763,34 @@
         console.error('Error loading payment history:', error);
       }
     }
+
+    // Load referral info
+    async function loadReferralInfo(idToken) {
+      const referralLinkInput = document.getElementById('referralLinkInput');
+      const referralAvailable = document.getElementById('referralAvailable');
+      try {
+        const res = await fetch('/referrals/api/referrals/session', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${idToken}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({})
+        });
+        const data = await res.json();
+        referralLinkInput.value = data.referralLink || '';
+        referralAvailable.textContent = `UGX ${(data.earnings?.available || 0).toLocaleString()}`;
+      } catch (error) {
+        console.error('Error loading referral info:', error);
+        referralLinkInput.value = 'Could not load link';
+      }
+    }
+
+    document.getElementById('referralCopyBtn').addEventListener('click', () => {
+      const input = document.getElementById('referralLinkInput');
+      const btn = document.getElementById('referralCopyBtn');
+      navigator.clipboard.writeText(input.value);
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+      setTimeout(() => { btn.innerHTML = originalHTML; }, 1500);
+    });
 
     // Submit payment proof
     const submitPaymentBtn = document.getElementById('submitPaymentBtn');
@@ -864,4 +951,4 @@
     }
   </script>
 </body>
-</html>
+  </html>
