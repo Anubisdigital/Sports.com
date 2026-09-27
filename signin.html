@@ -304,11 +304,11 @@
 
   <footer>
     <p style="margin-bottom: 10px;">© 2026 Boujee Sports. All rights reserved.</p>
-    <p><a href="/terms-policy.html" style="color:#8a8a8a;">Terms &amp; Policy</a> · <a href="mailto:support@boujeesports.com" style="color:#8a8a8a;">support@boujeesports.com</a></p>
+    <p><a href="/terms-policy.html" style="color:#8a8a8a;">Terms &amp; Policy</a> · <a href="/cdn-cgi/l/email-protection#11626461617e636551737e647b747462617e6365623f727e7c" style="color:#8a8a8a;"><span class="__cf_email__" data-cfemail="3f4c4a4f4f504d4b7f5d504a555a5a4c4f504d4b4c115c5052">[email&#160;protected]</span></a></p>
   </footer>
 
   <!-- FIREBASE MODULES -->
-  <script type="module">
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js';
     import { 
       getAuth, 
@@ -328,6 +328,7 @@
     };
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const referralCode = new URLSearchParams(window.location.search).get('ref');
 
     // DOM Elements
     const loginForm = document.getElementById('loginForm');
@@ -412,6 +413,19 @@
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
+        
+        // Backfill memberId for returning users (fire-and-forget, does not block redirect)
+        (async () => {
+          try {
+            const loginIdToken = await user.getIdToken();
+            await fetch('/referrals/api/referrals/session', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${loginIdToken}`, 'Content-Type': 'application/json' }
+            });
+          } catch (referralError) {
+            console.warn('Referral session backfill failed:', referralError);
+          }
+        })();
         
         // Success - redirect to profile
         showAlert('Login successful! Redirecting...', 'success');
@@ -503,6 +517,17 @@
           
           if (!response.ok) {
             console.warn('User created but session setup failed:', await response.text());
+          }
+          
+          // Link referral (reuses the idToken already in scope)
+          try {
+            await fetch('/referrals/api/referrals/session', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${idToken}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({ referralCode })
+            });
+          } catch (referralError) {
+            console.warn('Referral session setup failed:', referralError);
           }
         } catch (apiError) {
           console.warn('API session creation failed:', apiError);
